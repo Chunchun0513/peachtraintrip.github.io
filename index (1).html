@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>下道ロードトリップ道中記</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="桃鉄道中記">
+<meta name="theme-color" content="#FFC93C">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23FFC93C%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%232B2320%22%20stroke-width%3D%224%22/%3E%3Ccircle%20cx%3D%2235%22%20cy%3D%2235%22%20r%3D%226%22%20fill%3D%22%23E63946%22/%3E%3Ccircle%20cx%3D%2265%22%20cy%3D%2265%22%20r%3D%226%22%20fill%3D%22%23E63946%22/%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%226%22%20fill%3D%22%23E63946%22/%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E4%B8%8B%E9%81%93%E3%83%AD%E3%83%BC%E3%83%89%E3%83%88%E3%83%AA%E3%83%83%E3%83%97%E9%81%93%E4%B8%AD%E8%A8%98%22%2C%22short_name%22%3A%22%E6%A1%83%E9%89%84%E9%81%93%E4%B8%AD%E8%A8%98%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23FFF8E7%22%2C%22theme_color%22%3A%22%23FFC93C%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2522http%253A//www.w3.org/2000/svg%2522%2520viewBox%253D%25220%25200%2520100%2520100%2522%253E%253Crect%2520width%253D%2522100%2522%2520height%253D%2522100%2522%2520rx%253D%252220%2522%2520fill%253D%2522%2523FFC93C%2522/%253E%253Crect%2520x%253D%252220%2522%2520y%253D%252220%2522%2520width%253D%252260%2522%2520height%253D%252260%2522%2520rx%253D%252210%2522%2520fill%253D%2522%2523fff%2522%2520stroke%253D%2522%25232B2320%2522%2520stroke-width%253D%25224%2522/%253E%253Ccircle%2520cx%253D%252235%2522%2520cy%253D%252235%2522%2520r%253D%25226%2522%2520fill%253D%2522%2523E63946%2522/%253E%253Ccircle%2520cx%253D%252265%2522%2520cy%253D%252265%2522%2520r%253D%25226%2522%2520fill%253D%2522%2523E63946%2522/%253E%253Ccircle%2520cx%253D%252250%2522%2520cy%253D%252250%2522%2520r%253D%25226%2522%2520fill%253D%2522%2523E63946%2522/%253E%253C/svg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image/svg%2Bxml%22%7D%5D%7D">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{
+    --bg:#FFF8E7;
+    --paper:#FFFFFF;
+    --ink:#2B2320;
+    --ink-dim:#7A6F5E;
+    --line:#EADFC5;
+    --yellow:#FFC93C;
+    --yellow-dark:#E8A80C;
+    --red:#E63946;
+    --red-dark:#B4232E;
+    --blue:#4361EE;
+    --blue-dark:#2E45BE;
+    --green:#2A9D8F;
+    --green-dark:#1E7268;
+    --shadow-hard: 0 4px 0;
+  }
+  *{box-sizing:border-box;}
+  html{ background: var(--bg); min-height:100%; }
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 10% 0%, #FFEFC2 0%, transparent 45%),
+      radial-gradient(circle at 100% 20%, #FFE0C2 0%, transparent 40%),
+      var(--bg);
+    background-color: var(--bg);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .app{ max-width:480px; margin:0 auto; padding:16px 14px 60px; }
+
+  .app-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .app-title{ font-size:20px; font-weight:900; color:var(--red); letter-spacing:0.02em;
+    text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
+  .app-sub{ font-size:11px; color:var(--ink-dim); font-weight:700; }
+  .icon-btn{ background:#fff;border:2px solid var(--ink);color:var(--ink); border-radius:10px;width:38px;height:38px;font-size:16px;cursor:pointer; box-shadow: var(--shadow-hard) var(--ink); }
+  .icon-btn:active{ transform:translateY(3px); box-shadow:none; }
+
+  .phase-bar{ display:flex; align-items:center; justify-content:space-between; background:var(--paper); border:4px solid var(--ink); border-radius:14px; padding:10px 14px; margin-bottom:14px; box-shadow: 0 5px 0 var(--ink); }
+  .phase-badge{ font-size:13px; font-weight:900; padding:5px 12px; border-radius:20px; color:#fff; }
+  .phase-badge.moving{ background:var(--blue); }
+  .phase-badge.sightseeing{ background:var(--green); }
+  .phase-badge.resting{ background:#9B8B6F; }
+  .rest-toggle{ display:flex; align-items:center; gap:6px; font-size:12px; font-weight:800; cursor:pointer; }
+  .rest-toggle input{ width:36px; height:20px; }
+
+  .pt-card{ background:linear-gradient(180deg,#fff,#FFFBF0); border:5px solid var(--ink); border-radius:18px; padding:16px; margin-bottom:14px; box-shadow: 0 6px 0 var(--ink); text-align:center; position:relative; }
+  .pt-card::before{ content:"✨"; position:absolute; top:6px; left:14px; font-size:18px; }
+  .pt-card::after{ content:"✨"; position:absolute; top:6px; right:14px; font-size:18px; }
+  .pt-label{ font-size:11px; font-weight:800; color:var(--ink-dim); letter-spacing:0.1em; }
+  .pt-val{ font-size:38px; font-weight:900; color:var(--red); text-shadow:2px 2px 0 var(--yellow), -1px -1px 0 #fff; }
+
+  .path-strip{ display:flex; justify-content:center; align-items:center; gap:7px; margin:2px 0 14px; }
+  .path-dot{ width:9px; height:9px; border-radius:50%; background:var(--ink); opacity:0.18; }
+  .path-dot.car{ width:20px; opacity:1; text-align:center; font-size:16px; }
+
+  .tile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .tile-btn{ width:100%; border:4px solid var(--ink); border-radius:14px; padding:16px 10px; font-size:14px; font-weight:900; color:#fff; cursor:pointer; text-align:center; box-shadow: 0 5px 0 var(--ink); text-shadow:1px 1px 0 rgba(0,0,0,0.25); }
+  .tile-btn:active{ transform:translateY(5px); box-shadow:none; }
+  .tile-btn.full{ grid-column:1 / -1; }
+  .tile-btn small{ display:block; font-size:10px; font-weight:700; opacity:0.9; margin-top:3px; }
+  .tile-yellow{ background:linear-gradient(180deg,var(--yellow),var(--yellow-dark)); color:var(--ink); }
+  .tile-blue{ background:linear-gradient(180deg,var(--blue),var(--blue-dark)); }
+  .tile-red{ background:linear-gradient(180deg,var(--red),var(--red-dark)); }
+  .tile-green{ background:linear-gradient(180deg,var(--green),var(--green-dark)); }
+  .tile-purple{ background:linear-gradient(180deg,#9B5DE5,#7A3FC0); }
+  .tile-gray{ background:linear-gradient(180deg,#8D99AE,#6B7789); }
+  .tile-btn:disabled{ opacity:0.45; cursor:default; }
+
+  .section-title{ font-size:12px; font-weight:900; color:var(--ink-dim); letter-spacing:0.08em; margin:16px 0 8px; }
+
+  .held-card{ background:var(--paper); border:3px solid var(--ink); border-radius:14px; padding:12px; margin-bottom:10px; box-shadow:0 3px 0 rgba(0,0,0,0.15); }
+  .held-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .held-type{ font-size:10px; font-weight:900; padding:3px 9px; border-radius:8px; color:#fff; }
+  .held-type.moving{ background:var(--blue); }
+  .held-type.arrival{ background:var(--green); }
+  .held-type.yellow{ background:var(--yellow-dark); }
+  .held-cat{ font-size:10px; font-weight:800; color:var(--ink-dim); }
+  .held-text{ font-size:14px; font-weight:700; line-height:1.5; margin-bottom:8px; }
+  .held-actions{ display:flex; flex-wrap:wrap; gap:6px; }
+  .held-btn{ flex:1; min-width:100px; border:none; border-radius:8px; padding:8px 6px; font-size:11px; font-weight:800; cursor:pointer; color:#fff; }
+  .held-btn.done{ background:var(--green); }
+  .held-btn.fail{ background:var(--red); }
+  .held-btn.nocount{ background:#B0A48A; }
+
+  .sub-btn{ width:100%; background:#fff; border:2px solid var(--ink); color:var(--ink); border-radius:12px; padding:12px; font-size:13px; font-weight:800; cursor:pointer; margin-bottom:8px; }
+  .sub-btn:active{ background:#F3EEDD; }
+  .sub-btn.danger{ border-color:var(--red); color:var(--red); }
+
+  .empty-note{ font-size:12px; color:var(--ink-dim); text-align:center; padding:14px 8px; }
+
+  /* オーバーレイ演出 */
+  .overlay-backdrop{ position:fixed; inset:0; background:rgba(20,15,5,0.7); display:flex; align-items:center; justify-content:center; z-index:1000; padding:16px; }
+
+  .slot-box{ background:var(--paper); border:4px solid var(--ink); border-radius:20px; padding:26px 20px; text-align:center; box-shadow:0 8px 0 var(--ink); }
+  .slot-display{ font-size:44px; font-weight:900; color:var(--ink); background:#111; color:#FFD23F; border-radius:10px; padding:16px; margin-bottom:14px; font-family:monospace; letter-spacing:0.05em; }
+  .slot-display.spinning{ animation:slotshake 0.08s infinite; }
+  @keyframes slotshake{ 0%{transform:translateY(0);} 50%{transform:translateY(-4px);} 100%{transform:translateY(0);} }
+  .slot-result-text{ font-size:15px; font-weight:800; line-height:1.6; margin:10px 0; }
+  .slot-pt{ font-size:26px; font-weight:900; margin:6px 0; }
+  .slot-pt.plus{ color:var(--green-dark); }
+  .slot-pt.minus{ color:var(--red-dark); }
+
+  .card-flip-stage{ perspective:1000px; margin-bottom:16px; }
+  .card-choice-title{ color:#fff; text-align:center; font-weight:900; font-size:15px; margin-bottom:12px; text-shadow:1px 1px 0 #000; }
+  .card-choice-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .mini-card-back{ aspect-ratio:2/3; background:linear-gradient(135deg,var(--yellow),var(--red)); border:3px solid #fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:26px; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,0.35); }
+  .mini-card-back:active{ transform:translateY(3px); box-shadow:none; }
+  .card-flip-inner{ position:relative; width:100%; height:180px; transition:transform 0.6s; transform-style:preserve-3d; }
+  .card-flip-inner.flipped{ transform:rotateY(180deg); }
+  .card-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; border:4px solid var(--ink); display:flex; align-items:center; justify-content:center; padding:16px; text-align:center; }
+  .card-front{ background:linear-gradient(135deg,var(--yellow),var(--red)); }
+  .card-front-mark{ font-size:48px; }
+  .card-back{ background:#fff; transform:rotateY(180deg); flex-direction:column; }
+  .card-back .cat-badge{ font-size:11px; font-weight:900; padding:4px 10px; border-radius:8px; color:#fff; margin-bottom:8px; }
+  .card-back .card-text{ font-size:15px; font-weight:800; line-height:1.6; margin-bottom:8px; }
+  .card-back .card-pt{ font-size:24px; font-weight:900; color:var(--red-dark); }
+
+  .legendary-flash{ animation:flashbg 0.5s ease-in-out 3; }
+  @keyframes flashbg{ 0%,100%{ background:var(--paper);} 50%{ background:#FFF3B0;} }
+  .confetti-note{ font-size:24px; text-align:center; margin-top:6px; }
+
+  .overlay-sheet{ width:100%; max-width:420px; position:relative; }
+  .orbit-container{ position:absolute; top:50%; left:50%; width:230px; height:230px; margin:-115px 0 0 -115px; pointer-events:none; z-index:5; }
+  .orbit-ring{ position:absolute; inset:0; animation: orbitspin 3.5s linear infinite; }
+  .orbit-item{ position:absolute; top:50%; left:50%; width:34px; height:34px; margin:-17px 0 0 -17px; font-size:30px; text-align:center; line-height:34px; }
+  @keyframes orbitspin{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
+
+  .dice-box{ background:var(--paper); border:4px solid var(--ink); border-radius:20px; padding:30px; text-align:center; box-shadow:0 8px 0 var(--ink); }
+  .dice-face{ font-size:80px; }
+  .dice-face.rolling{ animation:diceroll 0.1s infinite; }
+  @keyframes diceroll{ 0%{transform:rotate(0deg) scale(1);} 50%{transform:rotate(180deg) scale(1.1);} 100%{transform:rotate(360deg) scale(1);} }
+
+  #miniMap{ width:100%; height:160px; border-radius:14px; border:2px solid var(--ink); margin-bottom:10px; }
+  #pinMap{ width:100%; height:60vh; min-height:320px; border-radius:14px; border:2px solid var(--ink); margin-bottom:10px; }
+  #resultMap{ width:100%; height:260px; border-radius:14px; border:2px solid var(--ink); margin-bottom:10px; }
+  #resultMap2{ width:100%; height:220px; border-radius:14px; border:2px solid var(--ink); margin-bottom:10px; }
+
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(20,15,5,0.6); display:flex; align-items:flex-end; justify-content:center; z-index:1000; }
+  .modal{ background:var(--paper); border:3px solid var(--ink); border-radius:20px 20px 0 0; padding:20px 16px 26px; width:100%; max-width:480px; max-height:88vh; overflow-y:auto; }
+  .modal h3{ margin:0 0 12px; font-size:16px; color:var(--ink); }
+  .modal p{ font-size:12px; color:var(--ink-dim); margin:0 0 10px; line-height:1.6; }
+  .modal input[type=text],.modal input[type=number],.modal input[type=datetime-local]{ width:100%; padding:12px; border-radius:10px; border:2px solid var(--line); background:#fff; color:var(--ink); font-size:15px; margin-bottom:10px; }
+  .modal textarea{ width:100%; resize:vertical; border-radius:10px; border:2px solid var(--line); padding:10px; font-family:monospace; font-size:11px; background:#fff; color:var(--ink); margin-bottom:10px; }
+  .divider{ border:none; border-top:2px dashed var(--line); margin:14px 0; }
+
+  .history-item{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line); font-size:12px; gap:8px; }
+  .history-item:last-child{ border-bottom:none; }
+  .history-name{ font-weight:800; }
+  .history-sub{ font-size:10px; color:var(--ink-dim); }
+
+  .share-toast{ text-align:center; font-size:12px; color:var(--red-dark); font-weight:800; margin:6px 0; }
+  .debug-note{ font-size:10px; color:var(--ink-dim); margin-top:6px; text-align:center; }
+  @keyframes slideDownIn{ from{ opacity:0; transform:translateY(-18px);} to{ opacity:1; transform:translateY(0);} }
+  .flow-item{ animation: slideDownIn 0.45s ease-out both; }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+/* ===================== 定数 ===================== */
+const STORAGE_KEY = "trip-state-v2";
+const TOKYO = { lat:35.681236, lng:139.767125 };
+
+const MISSION_TYPE_META = {
+  moving:{label:"移動中ミッション", color:"#4361EE", anim:"slot"},
+  arrival:{label:"到着地ミッション", color:"#2A9D8F", anim:"card"},
+  yellow:{label:"黄色マスミッション", color:"#E8A80C", anim:"card"}
+};
+const DEFAULT_POINT_RANGES = {
+  moving: {min:100, max:600},
+  arrival: {min:500, max:3000},
+  yellow: {min:500, max:5000}
+};
+function pointRangeFor(missionType){
+  return (state && state.settings && state.settings.pointRanges && state.settings.pointRanges[missionType]) || DEFAULT_POINT_RANGES[missionType];
+}
+
+const EXPENSE_CATEGORIES = ["食費","ガソリン代","お土産","車中泊用品","観光・体験","その他"];
+
+/* ===================== 実績データ ===================== */
+const ACHIEVEMENTS = [
+  {id:"first_step", name:"はじめの一歩", desc:"はじめて目的地を設定した", secret:false, reward:200,
+    check: s => s.pins.some(p=>p.type==="destination")},
+  {id:"first_arrival", name:"到着!", desc:"はじめて到着ボーナスを獲得した", secret:false, reward:300,
+    check: s => s.pointLog.some(l=>l.kind==="arrivalBonus")},
+  {id:"mission_10", name:"ミッションマスター", desc:"ミッションを10回達成した", secret:false, reward:500,
+    check: s => s.pointLog.filter(l=>l.kind.startsWith("mission-")&&l.amount>0).length>=10},
+  {id:"mission_30", name:"ミッション王", desc:"ミッションを30回達成した", secret:false, reward:1500,
+    check: s => s.pointLog.filter(l=>l.kind.startsWith("mission-")&&l.amount>0).length>=30},
+  {id:"yellow_5", name:"黄色マス制覇", desc:"黄色マスミッションを5回達成した", secret:false, reward:800,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-yellow"&&l.amount>0).length>=5},
+  {id:"arrival_mission_10", name:"到着地ハンター", desc:"到着地ミッションを10回達成した", secret:false, reward:600,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-arrival"&&l.amount>0).length>=10},
+  {id:"moving_mission_15", name:"移動中皆勤賞", desc:"移動中ミッションを15回達成した", secret:false, reward:700,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-moving"&&l.amount>0).length>=15},
+  {id:"rich_20000", name:"大金持ち", desc:"所持ポイントが15,000ptを超えた", secret:false, reward:400,
+    check: s => s.pt>=15000},
+  {id:"debt_hell", name:"借金地獄", desc:"???", secret:true, reward:100,
+    check: s => s.pt<=-3000},
+  {id:"big_spender", name:"浪費家", desc:"累計支出が10,000円を超えた", secret:false, reward:300,
+    check: s => -(s.pointLog.filter(l=>l.kind==="spend").reduce((a,l)=>a+l.amount,0)) >= 10000},
+  {id:"angel_blessed", name:"エンジェルに愛される者", desc:"???", secret:true, reward:800,
+    check: s => s.pointLog.some(l=>l.kind==="blue" && l.amount===Math.max(...s.settings.blueTable.map(x=>x.pt)))},
+  {id:"devil_marked", name:"デビルに魅入られし者", desc:"???", secret:true, reward:300,
+    check: s => s.pointLog.some(l=>l.kind==="red" && l.amount===-Math.max(...s.settings.redTable.map(x=>x.pt)))},
+  {id:"arrival_5", name:"5箇所到達", desc:"到着地を5箇所記録した", secret:false, reward:600,
+    check: s => s.pins.filter(p=>p.type==="arrival").length>=5},
+  {id:"arrival_10", name:"10箇所到達", desc:"到着地を10箇所記録した", secret:false, reward:1200,
+    check: s => s.pins.filter(p=>p.type==="arrival").length>=10},
+  {id:"arrival_20", name:"20箇所到達", desc:"到着地を20箇所記録した", secret:false, reward:2000,
+    check: s => s.pins.filter(p=>p.type==="arrival").length>=20},
+  {id:"rain_warrior", name:"雨天決行", desc:"???", secret:true, reward:500,
+    check: s => s.pointLog.some(l=>l.kind.startsWith("mission-")&&l.amount>0&&l.weatherBad)},
+  {id:"perfect_failure", name:"完璧な失敗", desc:"ミッションを5回逃した", secret:false, reward:200,
+    check: s => s.pointLog.filter(l=>l.kind.startsWith("mission-")&&l.amount<0).length>=5},
+  {id:"jackpot", name:"一撃必殺", desc:"???", secret:true, reward:800,
+    check: s => s.pointLog.some(l=>l.kind.startsWith("mission-")&&l.amount>=2700)},
+  {id:"custom_start", name:"旅立ちのカスタマイズ", desc:"出発地点を東京駅以外に変更した", secret:false, reward:200,
+    check: s => s.settings.startLocation && s.settings.startLocation.name !== "東京駅"},
+  {id:"moving_master", name:"移動職人", desc:"移動中ミッションを50回達成した", secret:false, reward:800,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-moving"&&l.amount>0).length>=50},
+  {id:"yellow_10", name:"黄金の道", desc:"黄色マスミッションを10回達成した", secret:false, reward:1000,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-yellow"&&l.amount>0).length>=10},
+  {id:"yellow_20", name:"黄色マス皆伝", desc:"黄色マスミッションを20回達成した", secret:false, reward:2000,
+    check: s => s.pointLog.filter(l=>l.kind==="mission-yellow"&&l.amount>0).length>=20},
+  {id:"variety_master", name:"多趣味な旅人", desc:"3種類のミッション(移動中/到着地/黄色マス)すべてで5回以上達成した", secret:false, reward:700,
+    check: s => ["mission-moving","mission-arrival","mission-yellow"].every(k=> s.pointLog.filter(l=>l.kind===k&&l.amount>0).length>=5)},
+  {id:"dice_30", name:"サイコロの申し子", desc:"サイコロを30回振った", secret:false, reward:600,
+    check: s => (s.diceRollCount||0)>=30},
+  {id:"expense_complete", name:"支出コンプリート", desc:"6つの支出カテゴリすべてを使った", secret:false, reward:500,
+    check: s => { const cats=new Set(s.pointLog.filter(l=>l.kind==="spend").map(l=>l.category)); return EXPENSE_CATEGORIES.every(c=>cats.has(c)); }},
+  {id:"big_single_spend", name:"大盤振る舞い", desc:"???", secret:true, reward:300,
+    check: s => s.pointLog.some(l=>l.kind==="spend" && l.amount<=-5000)},
+  {id:"almost_complete", name:"あと一歩", desc:"???", secret:true, reward:500,
+    check: s => s.unlockedAchievements.length>=19},
+  {id:"speedy_arrival", name:"スピード到着", desc:"???", secret:true, reward:400,
+    check: s => { const legs = pairPinsIntoLegs([...s.pins].sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp))); return legs.some(l=> l.dest && l.arrival && (new Date(l.arrival.timestamp)-new Date(l.dest.timestamp))<=30*60000 && (new Date(l.arrival.timestamp)-new Date(l.dest.timestamp))>=0); }},
+  {id:"slow_traveler", name:"のんびり旅人", desc:"???", secret:true, reward:300,
+    check: s => { const legs = pairPinsIntoLegs([...s.pins].sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp))); return legs.some(l=> l.dest && l.arrival && (new Date(l.arrival.timestamp)-new Date(l.dest.timestamp))>=5*3600000); }},
+  {id:"dice_10", name:"サイコロ好き", desc:"サイコロを10回振った", secret:false, reward:400,
+    check: s => s.diceRollCount>=10},
+  {id:"dice_triple", name:"ゾロ目連発", desc:"???", secret:true, reward:500,
+    check: s => { const h=s.diceHistory; for(let i=2;i<h.length;i++){ if(h[i]===h[i-1] && h[i-1]===h[i-2]) return true; } return false; }},
+  {id:"recorder", name:"旅の記録者", desc:"旅の記録をエクスポートした", secret:false, reward:300,
+    check: s => s.hasExported}
+];
+function checkAchievements(){
+  const newly = [];
+  for(const ach of ACHIEVEMENTS){
+    if(state.unlockedAchievements.includes(ach.id)) continue;
+    let met = false;
+    try{ met = !!ach.check(state); }catch(e){ met = false; }
+    if(met){
+      state.unlockedAchievements.push(ach.id);
+      state.pt += ach.reward;
+      state.pointLog.push({ id:"log"+Date.now()+Math.random().toString(36).slice(2,5), timestamp:nowISO(), kind:"achievement", amount:ach.reward, note:"実績解除: "+ach.name });
+      newly.push(ach);
+    }
+  }
+  if(newly.length){
+    saveState();
+    ui.newAchievements = (ui.newAchievements||[]).concat(newly);
+  }
+  return newly;
+}
+
+/* ===================== ストレージ互換レイヤー(旧実装から流用) ===================== */
+const STORAGE_MODE = (typeof window !== "undefined" && window.storage && typeof window.storage.get === "function") ? "native" : "local";
+async function storageGet(key){
+  if(STORAGE_MODE === "native"){
+    try{ const r = await window.storage.get(key, false); if(r && r.value) return r.value; }catch(e){}
+    try{ const local = localStorage.getItem(key); if(local) return local; }catch(e){}
+    return null;
+  }
+  try{ return localStorage.getItem(key); }catch(e){ return null; }
+}
+async function storageSet(key, value){
+  try{ localStorage.setItem(key, value); }catch(e){ console.error("local backup write failed", e); }
+  if(STORAGE_MODE === "native"){
+    try{ await window.storage.set(key, value, false); }catch(e){ console.error("native storage set failed", e); }
+  }
+}
+async function storageDelete(key){
+  try{ localStorage.removeItem(key); }catch(e){}
+  if(STORAGE_MODE === "native"){
+    try{ await window.storage.delete(key, false); }catch(e){}
+  }
+}
+
+/* ===================== ヘルパー ===================== */
+function esc(s){ const d=document.createElement("div"); d.textContent = s ?? ""; return d.innerHTML; }
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function pickWeighted(table){
+  if(!table || table.length===0) return 0;
+  const total = table.reduce((s,x)=>s+x.w,0);
+  if(total<=0) return table[0].pt;
+  let r = Math.random()*total;
+  for(const x of table){ if(r<x.w) return x.pt; r -= x.w; }
+  return table[table.length-1].pt;
+}
+function nowISO(){ return new Date().toISOString(); }
+function fmtDateTime(iso){
+  if(!iso) return "";
+  const d = new Date(iso);
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+function minutesSince(iso){
+  if(!iso) return Infinity;
+  return (Date.now() - new Date(iso).getTime()) / 60000;
+}
+
+/* ===================== ミッションデータ(3種類・カテゴリ廃止・番号+リピートフラグ) =====================
+   構造: [{number, text, points, repeat}, ...] のフラット配列
+   repeat=1: 一度出現しても抽選対象から除外しない。出現率も高め(重み3倍)
+   ============================================================ */
+const DEFAULT_MISSIONS_MOVING = [
+  {number:1, text:"コンビニで何か1つ選んで飲む", points:200, repeat:1},
+  {number:2, text:"窓の外の景色を1分間眺める", points:200, repeat:1},
+  {number:3, text:"好きな曲を1曲歌う", points:200, repeat:1},
+  {number:4, text:"今日の目標を話す", points:200, repeat:0},
+  {number:5, text:"すれ違う車に手を振ってみる", points:200, repeat:1},
+  {number:6, text:"車内を整える", points:200, repeat:1}
+];
+const DEFAULT_MISSIONS_ARRIVAL = [
+  {number:1, text:"名物を1つ食べる", points:1000, repeat:1},
+  {number:2, text:"周辺を10分間歩いて見て回る", points:1000, repeat:1},
+  {number:3, text:"温泉や足湯を見つけて入る", points:1000, repeat:1},
+  {number:4, text:"感謝を伝え合う", points:1000, repeat:1},
+  {number:5, text:"面白いものを1つ見つける", points:1000, repeat:1},
+  {number:6, text:"荷物を整理する", points:1000, repeat:1}
+];
+const DEFAULT_MISSIONS_YELLOW = [
+  {number:1, text:"特別な一皿に出会う", points:1800, repeat:0},
+  {number:2, text:"特別な景色に出会う", points:1800, repeat:0},
+  {number:3, text:"特別な体験をする", points:1800, repeat:0},
+  {number:4, text:"特別な会話をする", points:1800, repeat:0},
+  {number:5, text:"特別なゲームをする", points:1800, repeat:1},
+  {number:6, text:"特別な夜を過ごす", points:1800, repeat:0}
+];
+let ACTIVE_MISSIONS_MOVING = DEFAULT_MISSIONS_MOVING;
+let ACTIVE_MISSIONS_ARRIVAL = DEFAULT_MISSIONS_ARRIVAL;
+let ACTIVE_MISSIONS_YELLOW = DEFAULT_MISSIONS_YELLOW;
+function missionsForType(missionType){
+  if(missionType==="moving") return ACTIVE_MISSIONS_MOVING;
+  if(missionType==="arrival") return ACTIVE_MISSIONS_ARRIVAL;
+  return ACTIVE_MISSIONS_YELLOW;
+}
+function defaultMissionsForType(missionType){
+  if(missionType==="moving") return DEFAULT_MISSIONS_MOVING;
+  if(missionType==="arrival") return DEFAULT_MISSIONS_ARRIVAL;
+  return DEFAULT_MISSIONS_YELLOW;
+}
+
+/* ===================== CSV⇄ミッション変換(3種共通ロジック) ===================== */
+function stripCsvQuotes(field){
+  let f = (field||"").trim();
+  if(f.length>=2 && f.startsWith('"') && f.endsWith('"')){
+    f = f.slice(1,-1).replace(/""/g,'"');
+  }
+  return f;
+}
+function validateMissionsShape(list){
+  if(!Array.isArray(list) || list.length===0) return false;
+  return list.every(m => m && typeof m.number==="number" && typeof m.text==="string" && m.text.length>0 && typeof m.points==="number" && (m.repeat===0 || m.repeat===1));
+}
+function csvField(val){
+  const s = String(val);
+  if(s.includes(",") || s.includes('"') || s.includes("\n")){
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+  return s;
+}
+function missionsToCSV(missionsList){
+  const lines = ["number,text,points,repeat"];
+  for(const m of missionsList){
+    lines.push(`${m.number},${csvField(m.text)},${m.points},${m.repeat}`);
+  }
+  return lines.join("\n");
+}
+function parseMissionsCSV(text){
+  const lines = text.split("\n").map(l=>l.replace(/\r$/,"")).filter(l=>l.trim().length>0);
+  const result = [];
+  let autoNumber = 1;
+  for(const line of lines){
+    const parts = [];
+    let cur = "", inQuotes = false;
+    for(let i=0;i<line.length;i++){
+      const ch = line[i];
+      if(ch==='"') inQuotes = !inQuotes;
+      else if(ch===',' && !inQuotes){ parts.push(cur); cur=""; }
+      else cur += ch;
+    }
+    parts.push(cur);
+    if(parts.length < 2) continue;
+    let numberVal, textVal, pointsVal, repeatVal;
+    if(parts.length >= 4){
+      const maybeNum = stripCsvQuotes(parts[0]);
+      if(/^-?\d+$/.test(maybeNum)){
+        numberVal = parseInt(maybeNum,10);
+        textVal = stripCsvQuotes(parts[1]);
+        pointsVal = parseInt(stripCsvQuotes(parts[2]),10);
+        repeatVal = stripCsvQuotes(parts[3]).trim()==="1" ? 1 : 0;
+      } else { continue; }
+    } else {
+      // 旧形式や簡易2列にも一応対応し、自動採番・リピート0で救済する
+      // ただしpoints列が数値でない場合(ヘッダー行等)は誤取り込みを避けるためスキップする
+      textVal = stripCsvQuotes(parts[parts.length-2] || parts[0]);
+      const maybePoints = stripCsvQuotes(parts[parts.length-1]);
+      if(!/^-?\d+$/.test(maybePoints)) continue;
+      pointsVal = parseInt(maybePoints,10);
+      numberVal = autoNumber++;
+      repeatVal = 0;
+    }
+    if(!textVal || isNaN(numberVal) || isNaN(pointsVal)) continue;
+    result.push({number:numberVal, text:textVal, points:pointsVal, repeat:repeatVal});
+  }
+  return result;
+}
+function parseMissionInput(raw){
+  const trimmed = raw.trim();
+  if(trimmed.startsWith("[")){
+    try{ const parsed = JSON.parse(trimmed); if(validateMissionsShape(parsed)) return parsed; }catch(e){}
+    return null;
+  }
+  const csvResult = parseMissionsCSV(trimmed);
+  return validateMissionsShape(csvResult) ? csvResult : null;
+}
+const MISSIONS_OVERRIDE_KEYS = { moving:"custom-missions-moving", arrival:"custom-missions-arrival", yellow:"custom-missions-yellow" };
+function syncPointRangeToPool(missionType){
+  const pool = missionsForType(missionType);
+  if(!pool || !pool.length || !state || !state.settings) return;
+  const pts = pool.map(m=>m.points);
+  state.settings.pointRanges[missionType] = { min: Math.min(...pts), max: Math.max(...pts) };
+}
+async function loadMissionsOverride(missionType){
+  try{
+    const val = await storageGet(MISSIONS_OVERRIDE_KEYS[missionType]);
+    if(val){
+      const parsed = JSON.parse(val);
+      if(validateMissionsShape(parsed)){
+        if(missionType==="moving") ACTIVE_MISSIONS_MOVING = parsed;
+        else if(missionType==="arrival") ACTIVE_MISSIONS_ARRIVAL = parsed;
+        else ACTIVE_MISSIONS_YELLOW = parsed;
+        syncPointRangeToPool(missionType);
+      }
+    }
+  }catch(e){}
+}
+async function loadAllMissionsOverrides(){
+  await loadMissionsOverride("moving");
+  await loadMissionsOverride("arrival");
+  await loadMissionsOverride("yellow");
+}
+
+/* ===================== 状態(state)管理 ===================== */
+let state = null;
+function defaultUI(){
+  return { screen:"home", overlay:null, pendingConfirm:null, shareMessage:null, missionEditorType:null, missionEditorDraft:null, drawResult:null, slotSpinning:false, cardFlipped:false, pinDraft:null, storageTestResult:null, cardChoices:null, cardChosenIndex:null, currentDrawType:null, arrivalDateDraft:null, resultsSubScreen:"map", weather:null, newAchievements:[], pointLogEntryDirect:false, pinMode:"destination" };
+}
+let ui = defaultUI();
+
+function defaultState(){
+  return {
+    pt: 0,
+    phase: "sightseeing",
+    isResting: false,
+    activeDestination: null,
+    movingPhaseStartedAt: null,
+    lastMovingMissionAt: null,
+    pins: [],
+    heldMissions: [],
+    pointLog: [],
+    diceRollCount: 0,
+    diceHistory: [],
+    hasExported: false,
+    unlockedAchievements: [],
+    drawnMissionNumbers: { moving: [], arrival: [], yellow: [] },
+    settings: {
+      arrivalBonus: 1000,
+      heldCap: 5,
+      autoBackupOnArrival: false,
+      pointRanges: JSON.parse(JSON.stringify(DEFAULT_POINT_RANGES)),
+      startLocation: { name:"東京駅", lat: TOKYO.lat, lng: TOKYO.lng },
+      blueTable: [{pt:300,w:16},{pt:400,w:26},{pt:500,w:32},{pt:700,w:16},{pt:1000,w:10}],
+      redTable: [{pt:500,w:16},{pt:700,w:26},{pt:1000,w:32},{pt:1500,w:16},{pt:2000,w:10}]
+    }
+  };
+}
+function migrateState(){
+  if(!state) return;
+  if(!Array.isArray(state.pointLog)){
+    // 旧バージョンの互換性がないデータ、または初回。安全のため新規状態にリセット
+    state = defaultState();
+    return;
+  }
+  if(!state.settings) state.settings = defaultState().settings;
+  if(typeof state.isResting !== "boolean") state.isResting = false;
+  if(!Array.isArray(state.pins)) state.pins = [];
+  if(!Array.isArray(state.heldMissions)) state.heldMissions = [];
+  if(state.activeDestination === undefined) state.activeDestination = null;
+  if(!state.settings.blueTable || !state.settings.blueTable.length) state.settings.blueTable = defaultState().settings.blueTable;
+  if(!state.settings.redTable || !state.settings.redTable.length) state.settings.redTable = defaultState().settings.redTable;
+  if(typeof state.diceRollCount !== "number") state.diceRollCount = 0;
+  if(!Array.isArray(state.diceHistory)) state.diceHistory = [];
+  if(typeof state.hasExported !== "boolean") state.hasExported = false;
+  if(!Array.isArray(state.unlockedAchievements)) state.unlockedAchievements = [];
+  if(typeof state.settings.autoBackupOnArrival !== "boolean") state.settings.autoBackupOnArrival = false;
+  if(!state.settings.pointRanges) state.settings.pointRanges = JSON.parse(JSON.stringify(DEFAULT_POINT_RANGES));
+  if(!state.settings.startLocation || typeof state.settings.startLocation.lat !== "number"){
+    state.settings.startLocation = { name:"東京駅", lat: TOKYO.lat, lng: TOKYO.lng };
+  }
+  if(!state.drawnMissionNumbers) state.drawnMissionNumbers = { moving: [], arrival: [], yellow: [] };
+  ["moving","arrival","yellow"].forEach(t=>{ if(!Array.isArray(state.drawnMissionNumbers[t])) state.drawnMissionNumbers[t] = []; });
+  // 旧バージョン(カテゴリ形式)のheldMissionsにnumberが無い場合の救済(表示崩れ防止)
+  state.heldMissions.forEach(m=>{ if(typeof m.number !== "number") m.number = 0; });
+}
+async function loadState(){
+  try{
+    const val = await storageGet(STORAGE_KEY);
+    state = val ? JSON.parse(val) : defaultState();
+  }catch(e){
+    state = defaultState();
+  }
+  migrateState();
+  await loadAllMissionsOverrides();
+  const weatherLoc = state.activeDestination
+    ? state.activeDestination
+    : [...state.pins].filter(p=>p.type==="arrival").sort((a,b)=> new Date(b.timestamp)-new Date(a.timestamp))[0];
+  if(weatherLoc && typeof weatherLoc.lat === "number") fetchWeather(weatherLoc.lat, weatherLoc.lng);
+  render();
+  checkMovingMissionOnResume();
+}
+async function saveState(){
+  await storageSet(STORAGE_KEY, JSON.stringify(state));
+}
+async function doResetTrip(){
+  await storageDelete(STORAGE_KEY);
+  state = defaultState();
+  ui = defaultUI();
+  await storageSet(STORAGE_KEY, JSON.stringify(state));
+  render();
+}
+function resetTrip(){
+  askConfirm("旅の記録をすべて消して最初からやり直しますか?", doResetTrip);
+}
+
+/* ===================== 確認モーダル(alert/confirm不使用) ===================== */
+function askConfirm(message, onConfirmFn){
+  ui.pendingConfirm = { message, onConfirmFn };
+  ui.overlay = "confirm";
+  render();
+}
+function confirmYes(){
+  const fn = ui.pendingConfirm && ui.pendingConfirm.onConfirmFn;
+  ui.pendingConfirm = null;
+  ui.overlay = null;
+  if(fn) fn();
+  else render();
+}
+function confirmNo(){
+  ui.pendingConfirm = null;
+  ui.overlay = null;
+  render();
+}
+
+/* ===================== バックアップ/復元 ===================== */
+function exportStateBackup(){
+  const text = JSON.stringify(state);
+  navigator.clipboard.writeText(text).then(()=>{
+    ui.shareMessage = "コピーしました。すぐメモ帳等に貼り付けてください";
+    render();
+    setTimeout(()=>{ ui.shareMessage=null; render(); }, 3000);
+  }).catch(()=>{
+    ui.shareMessage = "コピーできませんでした";
+    render();
+    setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+  });
+}
+function downloadStateBackup(){
+  try{
+    const text = JSON.stringify(state, null, 2);
+    const blob = new Blob([text], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "roadtrip-backup-" + Date.now() + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    ui.shareMessage = "ダウンロードを開始しました";
+  }catch(e){
+    ui.shareMessage = "ダウンロードできませんでした(コピーをお試しください)";
+  }
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+}
+function openRestoreBackup(){ ui.overlay = "restore-backup"; render(); }
+function closeRestoreBackup(){ ui.overlay = null; render(); }
+async function submitRestoreBackup(){
+  const raw = document.getElementById("restoreBackupTextarea").value;
+  let parsed;
+  try{ parsed = JSON.parse(raw); }
+  catch(e){
+    ui.shareMessage = "JSONとして読み込めませんでした";
+    render(); setTimeout(()=>{ui.shareMessage=null;render();},2500);
+    return;
+  }
+  if(!parsed || !Array.isArray(parsed.pointLog)){
+    ui.shareMessage = "バックアップの形式が正しくないようです";
+    render(); setTimeout(()=>{ui.shareMessage=null;render();},2500);
+    return;
+  }
+  state = parsed;
+  migrateState();
+  await saveState();
+  ui.overlay = null;
+  render();
+}
+
+/* ===================== 保存診断ツール ===================== */
+async function testStorage(){
+  const testKey = "storage-test-key";
+  const testValue = "test-" + Date.now();
+  const result = { mode: STORAGE_MODE, nativeSetOk:null, nativeGetOk:null, nativeError:null, localSetOk:null, localGetOk:null, localError:null };
+  if(STORAGE_MODE === "native"){
+    try{ await window.storage.set(testKey, testValue, false); result.nativeSetOk = true; }
+    catch(e){ result.nativeSetOk=false; result.nativeError = "set: "+String((e&&e.message)||e); }
+    try{
+      const r = await window.storage.get(testKey, false);
+      result.nativeGetOk = !!(r && r.value === testValue);
+    }catch(e){ result.nativeGetOk=false; result.nativeError=(result.nativeError?result.nativeError+" / ":"")+"get: "+String((e&&e.message)||e); }
+  }
+  try{ localStorage.setItem(testKey, testValue); result.localSetOk = true; }
+  catch(e){ result.localSetOk=false; result.localError="set: "+String((e&&e.message)||e); }
+  try{
+    const v = localStorage.getItem(testKey);
+    result.localGetOk = (v === testValue);
+  }catch(e){ result.localGetOk=false; }
+  ui.storageTestResult = result;
+  render();
+}
+
+/* ===================== ミッション抽選・解決 ===================== */
+function isLegendaryMission(missionType, points){
+  const range = pointRangeFor(missionType);
+  return points >= range.min + (range.max-range.min)*0.8;
+}
+/* ===================== 天気連動 ===================== */
+async function fetchWeather(lat, lng){
+  if(typeof lat !== "number" || typeof lng !== "number") return;
+  try{
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true`);
+    const data = await res.json();
+    const code = data.current_weather.weathercode;
+    const temp = data.current_weather.temperature;
+    const rainCodes=[51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99];
+    const snowCodes=[71,73,75,77,85,86];
+    const isBad = rainCodes.includes(code) || snowCodes.includes(code);
+    let icon="☀️";
+    if(snowCodes.includes(code)) icon="❄️";
+    else if(rainCodes.includes(code)) icon="🌧️";
+    else if([1,2,3].includes(code)) icon="☁️";
+    ui.weather = { code, temp, isBad, icon };
+  }catch(e){
+    ui.weather = null;
+  }
+  render();
+}
+const REPEAT_WEIGHT_MULTIPLIER = 3;
+function weightedPickMission(list){
+  if(!list || list.length===0) return null;
+  const weights = list.map(m => m.repeat===1 ? REPEAT_WEIGHT_MULTIPLIER : 1);
+  const total = weights.reduce((a,b)=>a+b,0);
+  let r = Math.random()*total;
+  for(let i=0;i<list.length;i++){
+    if(r < weights[i]) return list[i];
+    r -= weights[i];
+  }
+  return list[list.length-1];
+}
+function getEligibleMissions(missionType){
+  const pool = missionsForType(missionType);
+  const list = (pool && pool.length) ? pool : defaultMissionsForType(missionType);
+  const drawnNumbers = (state.drawnMissionNumbers && state.drawnMissionNumbers[missionType]) || [];
+  const heldTexts = state.heldMissions.map(m=>m.text);
+  let candidates = list.filter(m => (m.repeat===1 || !drawnNumbers.includes(m.number)) && !heldTexts.includes(m.text));
+  if(candidates.length===0){
+    // リピート不可のものが尽きた場合の安全策:全件から選び直す(held中のものは除く)
+    candidates = list.filter(m => !heldTexts.includes(m.text));
+  }
+  if(candidates.length===0) candidates = list;
+  return { list, candidates };
+}
+function drawMission(missionType){
+  const { candidates } = getEligibleMissions(missionType);
+  const picked = weightedPickMission(candidates) || defaultMissionsForType(missionType)[0];
+  if(!state.drawnMissionNumbers) state.drawnMissionNumbers = {moving:[],arrival:[],yellow:[]};
+  if(!state.drawnMissionNumbers[missionType].includes(picked.number)){
+    state.drawnMissionNumbers[missionType].push(picked.number);
+  }
+  const mission = { id:"m"+Date.now()+Math.random().toString(36).slice(2,7), missionType, number:picked.number, text:picked.text, points:picked.points, drawnAt: nowISO() };
+  state.heldMissions.push(mission);
+  saveState();
+  return mission;
+}
+function pickCandidateMission(missionType){
+  const { candidates } = getEligibleMissions(missionType);
+  const picked = weightedPickMission(candidates) || defaultMissionsForType(missionType)[0];
+  return { number:picked.number, text:picked.text, points:picked.points };
+}
+function handleDrawMission(missionType){
+  const cap = state.settings.heldCap || 5;
+  if(state.heldMissions.length >= cap){
+    ui.shareMessage = "保持中のミッションが上限です。片付けてから引いてください";
+    render(); setTimeout(()=>{ui.shareMessage=null;render();},2500);
+    return;
+  }
+  const anim = MISSION_TYPE_META[missionType].anim;
+  ui.currentDrawType = missionType;
+  if(anim === "card"){
+    const choices = [];
+    for(let i=0;i<8;i++) choices.push(pickCandidateMission(missionType));
+    ui.cardChoices = choices;
+    ui.cardChosenIndex = null;
+    ui.cardFlipped = false;
+    ui.overlay = "card-mission";
+    render();
+  } else {
+    const mission = drawMission(missionType);
+    ui.drawResult = { kind:"mission", mission };
+    ui.overlay = "slot-mission";
+    ui.slotSpinning = true;
+    render();
+    setTimeout(()=>{ ui.slotSpinning=false; render(); }, 1200);
+  }
+}
+function chooseCard(index){
+  if(ui.cardChosenIndex !== null) return;
+  ui.cardChosenIndex = index;
+  render();
+  setTimeout(()=>{
+    const chosen = ui.cardChoices[index];
+    const missionType = ui.currentDrawType;
+    if(!state.drawnMissionNumbers) state.drawnMissionNumbers = {moving:[],arrival:[],yellow:[]};
+    if(!state.drawnMissionNumbers[missionType].includes(chosen.number)){
+      state.drawnMissionNumbers[missionType].push(chosen.number);
+    }
+    const mission = { id:"m"+Date.now()+Math.random().toString(36).slice(2,7), missionType, number:chosen.number, text:chosen.text, points:chosen.points, drawnAt: nowISO() };
+    state.heldMissions.push(mission);
+    saveState();
+    ui.drawResult = { kind:"mission", mission };
+    ui.cardFlipped = true;
+    render();
+  }, 550);
+}
+function closeDrawOverlay(){
+  ui.overlay = null;
+  ui.drawResult = null;
+  ui.cardChoices = null;
+  ui.cardChosenIndex = null;
+  ui.currentDrawType = null;
+  render();
+}
+/* ===================== 元に戻す(直前の1操作のみ) ===================== */
+let lastStateSnapshot = null;
+function snapshotState(){
+  lastStateSnapshot = JSON.parse(JSON.stringify(state));
+}
+function undoLastAction(){
+  if(!lastStateSnapshot){
+    ui.shareMessage = "取り消せる操作がありません";
+    render();
+    setTimeout(()=>{ ui.shareMessage=null; render(); }, 2000);
+    return;
+  }
+  state = lastStateSnapshot;
+  lastStateSnapshot = null;
+  saveState();
+  ui.overlay = null;
+  ui.shareMessage = "直前の操作を取り消しました";
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+}
+
+function resolveMission(id, outcome){
+  const idx = state.heldMissions.findIndex(m=>m.id===id);
+  if(idx===-1) return;
+  snapshotState();
+  const m = state.heldMissions[idx];
+  let ptChange = 0;
+  if(outcome==="done") ptChange = m.points;
+  if(outcome==="failed") ptChange = -Math.round(m.points/2);
+  state.pt += ptChange;
+  if(outcome!=="nocount"){
+    state.pointLog.push({ id:"log"+Date.now()+Math.random().toString(36).slice(2,5), timestamp:nowISO(), kind:"mission-"+m.missionType, amount:ptChange, note:m.text, missionNumber:m.number, weatherBad: !!(ui.weather && ui.weather.isBad) });
+  }
+  state.heldMissions.splice(idx,1);
+  saveState();
+  checkAchievements();
+  render();
+}
+
+/* ===================== 赤マス・青マス ===================== */
+function handlePressBlue(){
+  snapshotState();
+  const table = state.settings.blueTable;
+  const pt = pickWeighted(table);
+  const maxPt = Math.max(...table.map(x=>x.pt));
+  ui.drawResult = { kind:"blue", amount:pt, legendary: pt===maxPt };
+  ui.overlay = "slot-square";
+  ui.slotSpinning = true;
+  render();
+  setTimeout(()=>{
+    ui.slotSpinning = false;
+    state.pt += pt;
+    state.pointLog.push({ id:"log"+Date.now(), timestamp:nowISO(), kind:"blue", amount:pt, note:"青マス" });
+    saveState();
+    checkAchievements();
+    render();
+  }, 1200);
+}
+function handlePressRed(){
+  snapshotState();
+  const table = state.settings.redTable;
+  const pt = pickWeighted(table);
+  const maxPt = Math.max(...table.map(x=>x.pt));
+  ui.drawResult = { kind:"red", amount:-pt, legendary: pt===maxPt };
+  ui.overlay = "slot-square";
+  ui.slotSpinning = true;
+  render();
+  setTimeout(()=>{
+    ui.slotSpinning = false;
+    state.pt -= pt;
+    state.pointLog.push({ id:"log"+Date.now(), timestamp:nowISO(), kind:"red", amount:-pt, note:"赤マス" });
+    saveState();
+    checkAchievements();
+    render();
+  }, 1200);
+}
+
+/* ===================== サイコロ ===================== */
+function handleRollDice(){
+  ui.overlay = "dice";
+  ui.slotSpinning = true;
+  ui.drawResult = { kind:"dice", value: 1 };
+  render();
+  let ticks = 0;
+  const interval = setInterval(()=>{
+    ui.drawResult.value = Math.floor(Math.random()*6)+1;
+    render();
+    ticks++;
+    if(ticks >= 14){
+      clearInterval(interval);
+      ui.slotSpinning = false;
+      const finalVal = Math.floor(Math.random()*6)+1;
+      ui.drawResult.value = finalVal;
+      state.diceRollCount = (state.diceRollCount||0)+1;
+      state.diceHistory = (state.diceHistory||[]).concat(finalVal).slice(-50);
+      saveState();
+      checkAchievements();
+      render();
+    }
+  }, 80);
+}
+
+/* ===================== おやすみトグル ===================== */
+function toggleResting(){
+  state.isResting = !state.isResting;
+  saveState();
+  render();
+}
+
+/* ===================== 移動中ミッション自動発令(復帰時チェック) ===================== */
+function checkMovingMissionOnResume(){
+  if(!state || state.phase !== "moving" || state.isResting) return;
+  const baseline = state.lastMovingMissionAt || state.movingPhaseStartedAt;
+  if(baseline && minutesSince(baseline) >= 60){
+    const cap = state.settings.heldCap || 5;
+    if(state.heldMissions.length < cap){
+      drawMission("moving");
+      state.lastMovingMissionAt = nowISO();
+      saveState();
+      render();
+    }
+  }
+}
+document.addEventListener("visibilitychange", ()=>{
+  if(document.visibilityState === "visible") checkMovingMissionOnResume();
+});
+
+/* ===================== 目的地入力・到着ボタン ===================== */
+function confirmDestinationPin(lat, lng, name){
+  snapshotState();
+  const pin = { id:"pin"+Date.now(), type:"destination", lat, lng, name, timestamp: nowISO() };
+  state.pins.push(pin);
+  state.activeDestination = { name, lat, lng };
+  state.phase = "moving";
+  state.movingPhaseStartedAt = nowISO();
+  state.lastMovingMissionAt = null;
+  saveState();
+  fetchWeather(lat, lng);
+  checkAchievements();
+  ui.overlay = null;
+  ui.screen = "home";
+  render();
+}
+function handleArrival(){
+  if(state.phase !== "moving" || !state.activeDestination){
+    ui.shareMessage = "先に目的地を入力してください";
+    render();
+    setTimeout(()=>{ui.shareMessage=null;render();},2500);
+    return;
+  }
+  const now = new Date();
+  const pad = n=>String(n).padStart(2,"0");
+  ui.arrivalDateDraft = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  ui.overlay = "arrival-date";
+  render();
+}
+function confirmArrivalWithDate(){
+  const dest = state.activeDestination;
+  if(!dest){ ui.overlay = null; render(); return; }
+  snapshotState();
+  const input = document.getElementById("arrivalDateInput");
+  const val = input ? input.value : "";
+  let timestamp = nowISO();
+  if(val){
+    const d = new Date(val);
+    if(!isNaN(d.getTime())) timestamp = d.toISOString();
+  }
+  const pin = { id:"pin"+Date.now(), type:"arrival", lat:dest.lat, lng:dest.lng, name:dest.name, timestamp };
+  state.pins.push(pin);
+  state.pt += state.settings.arrivalBonus;
+  state.pointLog.push({ id:"log"+Date.now(), timestamp, kind:"arrivalBonus", amount:state.settings.arrivalBonus, note:"到着ボーナス: "+dest.name });
+  state.phase = "sightseeing";
+  const cap = state.settings.heldCap || 5;
+  if(state.heldMissions.length < cap){
+    drawMission("arrival");
+  }
+  saveState();
+  fetchWeather(dest.lat, dest.lng);
+  checkAchievements();
+  ui.overlay = null;
+  render();
+  if(state.settings.autoBackupOnArrival){
+    downloadStateBackup();
+  }
+}
+function cancelArrivalDate(){
+  ui.overlay = null;
+  render();
+}
+
+/* ===================== 地図(Leaflet)関連 ===================== */
+let miniMapInstance = null;
+let pinMapInstance = null;
+let resultMapInstance = null;
+
+function initMiniMap(){
+  const el = document.getElementById("miniMap");
+  if(!el || typeof L === "undefined") return;
+  if(miniMapInstance){ try{ miniMapInstance.remove(); }catch(e){} miniMapInstance=null; }
+  const center = state.activeDestination ? [state.activeDestination.lat, state.activeDestination.lng] : [state.settings.startLocation.lat, state.settings.startLocation.lng];
+  miniMapInstance = L.map("miniMap", {zoomControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false, touchZoom:false, attributionControl:false}).setView(center, 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18}).addTo(miniMapInstance);
+  state.pins.slice(-15).forEach(p=>{
+    L.circleMarker([p.lat,p.lng], {radius:6, color: p.type==="destination"?"#4361EE":"#2A9D8F", weight:2, fillOpacity:0.9, fillColor: p.type==="destination"?"#4361EE":"#2A9D8F"}).addTo(miniMapInstance);
+  });
+}
+
+function openDestinationPicker(){
+  ui.screen = "destination-picker";
+  ui.pinMode = "destination";
+  ui.pinDraft = null;
+  render();
+  setTimeout(initPinMap, 30);
+}
+function openStartLocationPicker(){
+  ui.screen = "destination-picker";
+  ui.pinMode = "start";
+  ui.pinDraft = null;
+  ui.overlay = null;
+  render();
+  setTimeout(initPinMap, 30);
+}
+function closeDestinationPicker(){
+  ui.screen = ui.pinMode==="start" ? "home" : "home";
+  ui.pinMode = "destination";
+  render();
+}
+function initPinMap(){
+  const el = document.getElementById("pinMap");
+  if(!el || typeof L === "undefined") return;
+  if(pinMapInstance){ try{ pinMapInstance.remove(); }catch(e){} pinMapInstance=null; }
+  const center = state.activeDestination ? [state.activeDestination.lat, state.activeDestination.lng] : [state.settings.startLocation.lat, state.settings.startLocation.lng];
+  pinMapInstance = L.map("pinMap").setView(center, 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'&copy; OpenStreetMap contributors', maxZoom:18}).addTo(pinMapInstance);
+  state.pins.forEach(p=>{
+    L.marker([p.lat,p.lng]).addTo(pinMapInstance).bindPopup(esc(p.name)+"<br>"+(p.type==="destination"?"目的地":"到着"));
+  });
+  pinMapInstance.on("click", function(e){
+    ui.pinDraft = { lat:e.latlng.lat, lng:e.latlng.lng, name:"" };
+    ui.overlay = "pin-label";
+    render();
+  });
+}
+async function searchPlaceName(){
+  const input = document.getElementById("placeSearchInput");
+  const q = input ? input.value.trim() : "";
+  if(!q) return;
+  ui.shareMessage = "検索中…";
+  render();
+  try{
+    const res = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(q));
+    const data = await res.json();
+    ui.shareMessage = null;
+    if(data && data[0]){
+      const lat = parseFloat(data[0].lat), lng = parseFloat(data[0].lon);
+      if(pinMapInstance){ pinMapInstance.flyTo([lat,lng], 14); }
+      ui.pinDraft = { lat, lng, name:q };
+      ui.overlay = "pin-label";
+      render();
+    } else {
+      ui.shareMessage = "見つかりませんでした。地図を直接タップしてください";
+      render();
+      setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+    }
+  }catch(e){
+    ui.shareMessage = "検索に失敗しました。地図を直接タップしてください";
+    render();
+    setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+  }
+}
+function confirmStartLocation(lat, lng, name){
+  state.settings.startLocation = { name, lat, lng };
+  saveState();
+  checkAchievements();
+  ui.pinMode = "destination";
+  ui.screen = "home";
+  render();
+}
+function openWaypointPicker(){
+  ui.screen = "destination-picker";
+  ui.pinMode = "waypoint";
+  ui.pinDraft = null;
+  ui.overlay = null;
+  render();
+  setTimeout(initPinMap, 30);
+}
+function confirmWaypoint(lat, lng, name){
+  snapshotState();
+  const pin = { id:"pin"+Date.now(), type:"waypoint", lat, lng, name, timestamp: nowISO() };
+  state.pins.push(pin);
+  saveState();
+  checkAchievements();
+  ui.pinMode = "destination";
+  ui.screen = "home";
+  render();
+}
+function submitPinLabel(){
+  const nameInput = document.getElementById("pinNameInput");
+  const name = (nameInput ? nameInput.value.trim() : "") || "名称未設定";
+  const draft = ui.pinDraft;
+  const mode = ui.pinMode;
+  ui.overlay = null;
+  ui.pinDraft = null;
+  if(!draft) return;
+  if(mode === "start") confirmStartLocation(draft.lat, draft.lng, name);
+  else if(mode === "waypoint") confirmWaypoint(draft.lat, draft.lng, name);
+  else confirmDestinationPin(draft.lat, draft.lng, name);
+}
+function cancelPinLabel(){
+  ui.overlay = null;
+  ui.pinDraft = null;
+  render();
+}
+
+function initResultMap(sortedPins){
+  const el = document.getElementById("resultMap");
+  if(!el || typeof L === "undefined") return;
+  if(resultMapInstance){ try{ resultMapInstance.remove(); }catch(e){} resultMapInstance=null; }
+  const startPin = { name: state.settings.startLocation.name + "(スタート)", lat: state.settings.startLocation.lat, lng: state.settings.startLocation.lng, type:"start", timestamp:null };
+  const allPins = [startPin, ...sortedPins];
+  resultMapInstance = L.map("resultMap").setView([startPin.lat, startPin.lng], 9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'&copy; OpenStreetMap contributors', maxZoom:18}).addTo(resultMapInstance);
+  const polyline = L.polyline([], {color:"#E63946", weight:4}).addTo(resultMapInstance);
+  const bounds = L.latLngBounds(allPins.map(p=>[p.lat,p.lng]));
+  resultMapInstance.fitBounds(bounds, {padding:[24,24]});
+  let i = 0;
+  const latlngs = [];
+  function step(){
+    if(i >= allPins.length) return;
+    const p = allPins[i];
+    latlngs.push([p.lat,p.lng]);
+    polyline.setLatLngs(latlngs);
+    const color = p.type==="start" ? "#FFC93C" : (p.type==="destination" ? "#4361EE" : (p.type==="waypoint" ? "#9B5DE5" : "#2A9D8F"));
+    const marker = L.circleMarker([p.lat,p.lng], {radius:7, color, weight:2, fillOpacity:0.9, fillColor:color}).addTo(resultMapInstance);
+    const dateLabel = p.timestamp ? fmtDateTime(p.timestamp) : "出発";
+    marker.bindPopup(`<b>${esc(p.name)}</b>${p.type==="waypoint"?" (寄り道)":""}<br>${esc(dateLabel)}`).openPopup();
+    i++;
+    setTimeout(step, 550);
+  }
+  step();
+}
+
+let resultMap2Instance = null;
+function initResultMap2(sortedPins){
+  const el = document.getElementById("resultMap2");
+  if(!el || typeof L === "undefined") return;
+  if(resultMap2Instance){ try{ resultMap2Instance.remove(); }catch(e){} resultMap2Instance=null; }
+  const startPin = { name: state.settings.startLocation.name + "(スタート)", lat: state.settings.startLocation.lat, lng: state.settings.startLocation.lng, type:"start", timestamp:null };
+  const allPins = [startPin, ...sortedPins];
+  resultMap2Instance = L.map("resultMap2").setView([startPin.lat, startPin.lng], 9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'&copy; OpenStreetMap contributors', maxZoom:18}).addTo(resultMap2Instance);
+  const bounds = L.latLngBounds(allPins.map(p=>[p.lat,p.lng]));
+  resultMap2Instance.fitBounds(bounds, {padding:[24,24]});
+  const latlngs = allPins.map(p=>[p.lat,p.lng]);
+  L.polyline(latlngs, {color:"#E63946", weight:4}).addTo(resultMap2Instance);
+  allPins.forEach(p=>{
+    const color = p.type==="start" ? "#FFC93C" : (p.type==="destination" ? "#4361EE" : (p.type==="waypoint" ? "#9B5DE5" : "#2A9D8F"));
+    const dateLabel = p.timestamp ? fmtDateTime(p.timestamp) : "出発";
+    L.circleMarker([p.lat,p.lng], {radius:7, color, weight:2, fillOpacity:0.9, fillColor:color})
+      .addTo(resultMap2Instance).bindPopup(`<b>${esc(p.name)}</b>${p.type==="waypoint"?" (寄り道)":""}<br>${esc(dateLabel)}`);
+  });
+}
+function pairPinsIntoLegs(sortedPins){
+  const legs = [];
+  let pendingDest = null;
+  for(const p of sortedPins){
+    if(p.type === "destination"){
+      if(pendingDest) legs.push({dest:pendingDest, arrival:null});
+      pendingDest = p;
+    } else if(p.type === "arrival"){
+      legs.push({dest:pendingDest, arrival:p});
+      pendingDest = null;
+    }
+  }
+  if(pendingDest) legs.push({dest:pendingDest, arrival:null});
+  return legs;
+}
+let pointChartInstance = null;
+function initPointChart(){
+  const el = document.getElementById("pointChart");
+  if(!el || typeof Chart === "undefined") return;
+  if(pointChartInstance){ try{ pointChartInstance.destroy(); }catch(e){} pointChartInstance=null; }
+  const allLogs = [...state.pointLog].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  let running = defaultState().pt;
+  const labels = ["開始"];
+  const data = [running];
+  allLogs.forEach(l=>{
+    running += l.amount;
+    labels.push(fmtDateTime(l.timestamp));
+    data.push(running);
+  });
+  pointChartInstance = new Chart(el, {
+    type: "line",
+    data: { labels, datasets: [{ label:"所持ポイント", data, borderColor:"#E63946", backgroundColor:"rgba(230,57,70,0.15)", fill:true, tension:0.2, pointRadius:2 }] },
+    options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{display:false}, y:{beginAtZero:false} } }
+  });
+}
+
+/* ===================== 設定・ミッション編集UI ===================== */
+function openSettings(){ ui.overlay="settings"; render(); }
+function closeSettings(){ ui.overlay=null; render(); }
+async function saveSettings(){
+  const ab = parseInt(document.getElementById("arrivalBonusInput").value,10);
+  const hc = parseInt(document.getElementById("heldCapInput").value,10);
+  const autoBackup = document.getElementById("autoBackupToggle");
+  if(!isNaN(ab) && ab>=0) state.settings.arrivalBonus = ab;
+  if(!isNaN(hc) && hc>=1) state.settings.heldCap = hc;
+  if(autoBackup) state.settings.autoBackupOnArrival = autoBackup.checked;
+  await saveState();
+  ui.overlay = null;
+  render();
+}
+function rescaleMissionPool(missionType, newMin, newMax){
+  const pool = missionsForType(missionType);
+  if(!pool.length) return pool;
+  const allPoints = pool.map(m=>m.points);
+  const oldMin = Math.min(...allPoints);
+  const oldMax = Math.max(...allPoints);
+  return pool.map(m=>{
+    let newPt;
+    if(oldMax === oldMin){ newPt = newMin; }
+    else{
+      const ratio = (m.points - oldMin) / (oldMax - oldMin);
+      newPt = Math.round((newMin + ratio*(newMax-newMin))/5)*5;
+    }
+    return { number:m.number, text:m.text, points:newPt, repeat:m.repeat };
+  });
+}
+async function applyPointRanges(){
+  const types = ["moving","arrival","yellow"];
+  const changed = [];
+  for(const t of types){
+    const minEl = document.getElementById(t+"MinInput");
+    const maxEl = document.getElementById(t+"MaxInput");
+    const min = parseInt(minEl.value,10);
+    const max = parseInt(maxEl.value,10);
+    if(isNaN(min) || isNaN(max) || max<=min) continue;
+    const oldRange = pointRangeFor(t);
+    if(oldRange.min===min && oldRange.max===max) continue;
+    const rescaled = rescaleMissionPool(t, min, max);
+    if(t==="moving") ACTIVE_MISSIONS_MOVING = rescaled;
+    else if(t==="arrival") ACTIVE_MISSIONS_ARRIVAL = rescaled;
+    else ACTIVE_MISSIONS_YELLOW = rescaled;
+    await storageSet(MISSIONS_OVERRIDE_KEYS[t], JSON.stringify(rescaled));
+    state.settings.pointRanges[t] = {min, max};
+    changed.push(t);
+  }
+  await saveState();
+  ui.shareMessage = changed.length ? `${changed.length}種類のポイントレンジを更新し、ミッションを再スケールしました` : "変更はありませんでした";
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 3000);
+}
+function openMissionEditor(missionType){
+  ui.missionEditorType = missionType;
+  ui.missionEditorDraft = missionsToCSV(missionsForType(missionType));
+  ui.overlay = "mission-editor";
+  render();
+}
+function closeMissionEditor(){ ui.overlay=null; ui.missionEditorType=null; render(); }
+function copyMissionData(){
+  const ta = document.getElementById("missionEditorTextarea");
+  if(!ta) return;
+  navigator.clipboard.writeText(ta.value).then(()=>{
+    ui.shareMessage="コピーしました"; render(); setTimeout(()=>{ui.shareMessage=null;render();},2000);
+  }).catch(()=>{});
+}
+async function saveMissionEditor(){
+  const raw = document.getElementById("missionEditorTextarea").value;
+  const parsed = parseMissionInput(raw);
+  if(!parsed){
+    ui.shareMessage = "読み込めませんでした。「番号,本文,ポイント,リピートフラグ(0/1)」のCSV形式で入力してください";
+    render(); setTimeout(()=>{ui.shareMessage=null;render();},3000);
+    return;
+  }
+  const t = ui.missionEditorType;
+  if(t==="moving") ACTIVE_MISSIONS_MOVING = parsed;
+  else if(t==="arrival") ACTIVE_MISSIONS_ARRIVAL = parsed;
+  else ACTIVE_MISSIONS_YELLOW = parsed;
+  syncPointRangeToPool(t);
+  await storageSet(MISSIONS_OVERRIDE_KEYS[t], JSON.stringify(parsed));
+  await saveState();
+  ui.overlay = null;
+  ui.missionEditorType = null;
+  const numbers = parsed.map(m=>m.number);
+  const hasDupe = new Set(numbers).size !== numbers.length;
+  if(hasDupe){
+    ui.shareMessage = "保存しました(番号が重複している行があります。抽選管理が不正確になる場合があるため、可能なら番号を一意にしてください)";
+    render();
+    setTimeout(()=>{ui.shareMessage=null;render();},4000);
+  } else {
+    render();
+  }
+}
+async function doResetMissionsToDefault(){
+  const t = ui.missionEditorType;
+  if(t==="moving") ACTIVE_MISSIONS_MOVING = DEFAULT_MISSIONS_MOVING;
+  else if(t==="arrival") ACTIVE_MISSIONS_ARRIVAL = DEFAULT_MISSIONS_ARRIVAL;
+  else ACTIVE_MISSIONS_YELLOW = DEFAULT_MISSIONS_YELLOW;
+  syncPointRangeToPool(t);
+  await storageDelete(MISSIONS_OVERRIDE_KEYS[t]);
+  await saveState();
+  ui.overlay = null; ui.missionEditorType=null;
+  render();
+}
+function resetMissionsToDefault(){
+  askConfirm("このミッションをデフォルトに戻しますか?", doResetMissionsToDefault);
+}
+
+/* ===================== リザルト画面 ===================== */
+/* ===================== 実績画面 ===================== */
+function openAchievements(){ ui.screen = "achievements"; render(); }
+function dismissNewAchievement(){
+  ui.newAchievements.shift();
+  render();
+}
+function renderNewAchievementToast(){
+  if(!ui.newAchievements || ui.newAchievements.length===0) return "";
+  const a = ui.newAchievements[0];
+  return `
+    <div class="overlay-backdrop" style="z-index:1200;">
+      <div class="overlay-sheet">
+        <div class="slot-box legendary-flash">
+          <div style="font-size:40px;">🏅</div>
+          <div class="slot-result-text" style="font-size:18px;">実績解除!</div>
+          <div class="card-pt" style="margin:6px 0;">${esc(a.name)}</div>
+          <div style="font-size:13px;color:var(--ink-dim);margin-bottom:10px;">${esc(a.desc==="???"?"シークレット実績でした":a.desc)}</div>
+          <div class="slot-pt plus">+${a.reward}pt</div>
+          <button class="tile-btn tile-yellow full" onclick="dismissNewAchievement()">OK</button>
+        </div>
+      </div>
+    </div>`;
+}
+function renderAchievementsScreen(){
+  const rows = ACHIEVEMENTS.map(ach=>{
+    const unlocked = state.unlockedAchievements.includes(ach.id);
+    const showSecret = ach.secret && !unlocked;
+    const name = showSecret ? "??? (シークレット実績)" : ach.name;
+    const desc = showSecret ? "達成条件は秘密です" : ach.desc;
+    return `
+      <div class="held-card" style="${unlocked?'':'filter:grayscale(1);opacity:0.5;'}">
+        <div class="held-top">
+          <span class="held-type" style="background:${unlocked?'#E8A80C':'#999'};">${unlocked?"🏅解除済み":"🔒未解除"}</span>
+          ${unlocked?`<span class="held-cat">+${ach.reward}pt</span>`:""}
+        </div>
+        <div class="held-text">${esc(name)}</div>
+        <div style="font-size:12px;color:var(--ink-dim);">${esc(desc)}</div>
+      </div>`;
+  }).join("");
+  const unlockedCount = state.unlockedAchievements.length;
+  return `
+    ${renderHeader()}
+    <button class="sub-btn" onclick="ui.screen='home'; render();">← ホームに戻る</button>
+    <div class="pt-card"><div class="pt-label">実績解除数</div><div class="pt-val" style="font-size:30px;">${unlockedCount} / ${ACHIEVEMENTS.length}</div></div>
+    ${rows}
+  `;
+}
+
+/* ===================== 統計画面 ===================== */
+function openStats(){ ui.screen = "stats"; render(); }
+function renderStatsScreen(){
+  const missionLogs = state.pointLog.filter(l=>l.kind.startsWith("mission-"));
+  const doneMissions = missionLogs.filter(l=>l.amount>0);
+  const failedMissions = missionLogs.filter(l=>l.amount<0);
+  const totalDrawn = doneMissions.length + failedMissions.length;
+  const completionRate = totalDrawn>0 ? Math.round(doneMissions.length/totalDrawn*100) : 0;
+  const byType = {moving:0, arrival:0, yellow:0};
+  doneMissions.forEach(l=>{ const t=l.kind.replace("mission-",""); if(byType[t]!==undefined) byType[t]++; });
+  const spendLogs = state.pointLog.filter(l=>l.kind==="spend");
+  const totalSpend = -spendLogs.reduce((a,l)=>a+l.amount,0);
+  const byCategory = {};
+  spendLogs.forEach(l=>{ const c=l.category||"その他"; byCategory[c]=(byCategory[c]||0)+(-l.amount); });
+  const blueLogs = state.pointLog.filter(l=>l.kind==="blue");
+  const redLogs = state.pointLog.filter(l=>l.kind==="red");
+  const categoryRows = Object.entries(byCategory).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>
+    `<div class="history-item"><div class="history-name">${esc(cat)}</div><div style="font-weight:900;">${amt.toLocaleString()}円</div></div>`
+  ).join("") || `<div class="empty-note">支出記録なし</div>`;
+  return `
+    ${renderHeader()}
+    <button class="sub-btn" onclick="ui.screen='home'; render();">← ホームに戻る</button>
+    <div class="pt-card"><div class="pt-label">現在の軍資金</div><div class="pt-val">${state.pt.toLocaleString()}pt</div></div>
+    <div class="section-title">ミッション達成率</div>
+    <div class="pt-card" style="text-align:center;">
+      <div class="pt-val" style="font-size:32px;">${completionRate}%</div>
+      <div style="font-size:12px;color:var(--ink-dim);">達成${doneMissions.length}件 / 失敗${failedMissions.length}件</div>
+    </div>
+    <div class="history-item"><div class="history-name">🚗 移動中ミッション達成</div><div>${byType.moving}件</div></div>
+    <div class="history-item"><div class="history-name">🏝 到着地ミッション達成</div><div>${byType.arrival}件</div></div>
+    <div class="history-item"><div class="history-name">🌟 黄色マスミッション達成</div><div>${byType.yellow}件</div></div>
+    <div class="section-title">マス目イベント</div>
+    <div class="history-item"><div class="history-name">🟦 青マス</div><div>${blueLogs.length}回</div></div>
+    <div class="history-item"><div class="history-name">🟥 赤マス</div><div>${redLogs.length}回</div></div>
+    <div class="section-title">支出(合計 ${totalSpend.toLocaleString()}円)</div>
+    ${categoryRows}
+    <div class="section-title">その他</div>
+    <div class="history-item"><div class="history-name">📍 到着地数</div><div>${state.pins.filter(p=>p.type==="arrival").length}箇所</div></div>
+    <div class="history-item"><div class="history-name">🎲 サイコロ回数</div><div>${state.diceRollCount||0}回</div></div>
+    <div class="history-item"><div class="history-name">🏅 実績解除数</div><div>${state.unlockedAchievements.length} / ${ACHIEVEMENTS.length}</div></div>
+  `;
+}
+
+function openResults(){
+  ui.screen = "results";
+  ui.resultsSubScreen = "map";
+  render();
+  const sorted = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  setTimeout(()=>initResultMap(sorted), 60);
+}
+function goToPointLog(){
+  ui.resultsSubScreen = "pointlog";
+  ui.pointLogEntryDirect = false;
+  render();
+}
+function openPointLogDirect(){
+  ui.screen = "results";
+  ui.resultsSubScreen = "pointlog";
+  ui.pointLogEntryDirect = true;
+  render();
+}
+function backFromPointLog(){
+  if(ui.pointLogEntryDirect){
+    ui.screen = "home";
+    render();
+  } else {
+    backToResultMap();
+  }
+}
+function backToResultMap(){
+  ui.resultsSubScreen = "map";
+  render();
+  const sorted = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  setTimeout(()=>initResultMap(sorted), 60);
+}
+function openExpense(){ ui.overlay = "expense"; render(); }
+function closeExpense(){ ui.overlay = null; render(); }
+function submitExpense(){
+  const input = document.getElementById("expenseInput");
+  const noteInput = document.getElementById("expenseNoteInput");
+  const catSelect = document.getElementById("expenseCategorySelect");
+  const val = input ? parseInt(input.value,10) : NaN;
+  const note = noteInput ? noteInput.value.trim() : "";
+  const category = catSelect ? catSelect.value : EXPENSE_CATEGORIES[EXPENSE_CATEGORIES.length-1];
+  if(!isNaN(val) && val > 0){
+    snapshotState();
+    state.pt -= val;
+    state.pointLog.push({ id:"log"+Date.now(), timestamp:nowISO(), kind:"spend", amount:-val, note: note || "使い道未記入", category });
+    saveState();
+    checkAchievements();
+  }
+  ui.overlay = null;
+  render();
+}
+function renderExpenseModal(){
+  if(ui.overlay !== "expense") return "";
+  const catOptions = EXPENSE_CATEGORIES.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  return `
+    <div class="modal-backdrop" onclick="if(event.target===this) closeExpense()">
+      <div class="modal">
+        <h3>お金を使った</h3>
+        <p>カテゴリ・使い道・金額(円)を入力してください。1pt=1円なので、そのままポイントから引かれます。</p>
+        <select id="expenseCategorySelect" style="width:100%;padding:12px;border-radius:10px;border:2px solid var(--line);font-size:15px;margin-bottom:10px;background:#fff;">${catOptions}</select>
+        <input type="text" id="expenseNoteInput" placeholder="使い道(例: 給油)">
+        <input type="number" id="expenseInput" min="1" step="1" placeholder="金額(例: 1500)">
+        <button class="tile-btn tile-red full" onclick="submitExpense()">この金額を使う</button>
+        <button class="sub-btn" onclick="closeExpense()">キャンセル</button>
+      </div>
+    </div>`;
+}
+function logKindLabel(kind){
+  const map = {"mission-moving":"移動中ミッション","mission-arrival":"到着地ミッション","mission-yellow":"黄色マスミッション","blue":"青マス","red":"赤マス","arrivalBonus":"到着ボーナス","spend":"お金を使った","achievement":"実績解除"};
+  return map[kind]||kind;
+}
+
+/* ===================== レンダリング ===================== */
+function renderHeader(){
+  return `
+    <div class="app-header">
+      <div><div class="app-title">🎲 桃鉄道中記</div><div class="app-sub">車中泊ロードトリップ</div></div>
+      <button class="icon-btn" onclick="openSettings()">⚙️</button>
+    </div>`;
+}
+function renderPhaseBar(){
+  const phaseLabel = state.isResting ? "😴 おやすみ中" : (state.phase==="moving" ? "🚗 移動中" : "🏖 観光中");
+  const phaseClass = state.isResting ? "resting" : state.phase;
+  return `
+    <div class="phase-bar">
+      <span class="phase-badge ${phaseClass}">${phaseLabel}</span>
+      <label class="rest-toggle">おやすみ<input type="checkbox" ${state.isResting?"checked":""} onchange="toggleResting()"></label>
+    </div>`;
+}
+function renderPtCard(){
+  const weatherBadge = ui.weather ? `<div style="font-size:13px;margin-top:4px;">${ui.weather.icon} ${Math.round(ui.weather.temp)}°C</div>` : "";
+  return `<div class="pt-card" onclick="openPointLogDirect()" style="cursor:pointer;"><div class="pt-label">旅の軍資金(タップで履歴)</div><div class="pt-val">${state.pt.toLocaleString()}<span style="font-size:16px;">pt</span></div>${weatherBadge}</div>`;
+}
+function renderDestinationSection(){
+  if(state.phase === "moving" && state.activeDestination){
+    return `
+      <div class="pt-card" style="text-align:left;">
+        <div class="pt-label">🚗 移動中の目的地</div>
+        <div style="font-size:18px;font-weight:900;margin:4px 0 8px;">${esc(state.activeDestination.name)}</div>
+        <div id="miniMap"></div>
+      </div>
+      <button class="tile-btn tile-green full" onclick="handleArrival()">✅ 到着した(+${state.settings.arrivalBonus}pt)</button>
+      <button class="sub-btn" onclick="openDestinationPicker()">📍 目的地を変更する</button>
+    `;
+  }
+  return `<button class="tile-btn tile-blue full" onclick="openDestinationPicker()">📍 目的地を入力する</button>`;
+}
+function renderTileGrid(){
+  const cap = state.settings.heldCap||5;
+  const atCap = state.heldMissions.length >= cap;
+  return `
+    <div class="section-title">ミッションを引く</div>
+    <div class="tile-grid">
+      <button class="tile-btn tile-yellow full" onclick="handleDrawMission('yellow')" ${atCap?"disabled":""}>🌟 黄色マスミッション</button>
+      <button class="tile-btn tile-green" onclick="handleDrawMission('arrival')" ${atCap?"disabled":""}>🏝 到着地ミッション</button>
+      <button class="tile-btn tile-blue" onclick="handleDrawMission('moving')" ${atCap?"disabled":""}>🚗 移動中ミッション</button>
+    </div>
+    <div class="section-title">マス目イベント</div>
+    <div class="tile-grid">
+      <button class="tile-btn tile-blue" onclick="handlePressBlue()">🟦 青マス<small>ポイント増加</small></button>
+      <button class="tile-btn tile-red" onclick="handlePressRed()">🟥 赤マス<small>ポイント減少</small></button>
+    </div>
+    <button class="tile-btn tile-purple full" onclick="handleRollDice()">🎲 サイコロを振る</button>
+    <button class="tile-btn tile-gray full" onclick="openExpense()" ${state.pt<0?"disabled":""}>💴 お金を使った${state.pt<0?"(ポイント不足)":""}</button>
+  `;
+}
+function renderHeldMission(m){
+  const tm = MISSION_TYPE_META[m.missionType];
+  return `
+    <div class="held-card">
+      <div class="held-top">
+        <span class="held-type ${m.missionType}">${esc(tm.label)}</span>
+        <span class="held-cat">No.${m.number}</span>
+      </div>
+      <div class="held-text">${esc(m.text)}</div>
+      <div class="held-actions">
+        <button class="held-btn done" onclick="resolveMission('${m.id}','done')">達成(+${m.points}pt)</button>
+        <button class="held-btn fail" onclick="resolveMission('${m.id}','failed')">できなかった(-${Math.round(m.points/2)}pt)</button>
+        <button class="held-btn nocount" onclick="resolveMission('${m.id}','nocount')">これは無理</button>
+      </div>
+    </div>`;
+}
+function renderHeldMissionsSection(){
+  const cap = state.settings.heldCap||5;
+  const list = state.heldMissions.length ? state.heldMissions.map(renderHeldMission).join("") : `<div class="empty-note">保持中のミッションはありません</div>`;
+  return `<div class="section-title">保持中のミッション(${state.heldMissions.length}/${cap})</div>${list}`;
+}
+function renderHome(){
+  return `
+    ${renderHeader()}
+    <div class="path-strip"><span class="path-dot"></span><span class="path-dot"></span><span class="path-dot"></span><span class="path-dot car">🚐</span><span class="path-dot"></span><span class="path-dot"></span><span class="path-dot"></span></div>
+    ${renderPhaseBar()}
+    ${lastStateSnapshot ? `<button class="sub-btn" onclick="undoLastAction()" style="border-color:var(--red);color:var(--red-dark);">↩️ 直前の操作を元に戻す</button>` : ""}
+    ${renderPtCard()}
+    ${renderDestinationSection()}
+    ${renderTileGrid()}
+    ${renderHeldMissionsSection()}
+    <button class="sub-btn" onclick="openWaypointPicker()">📍 寄り道スポットを登録する</button>
+    <div class="tile-grid" style="margin-top:4px;">
+      <button class="tile-btn tile-yellow" onclick="openAchievements()">🏅 実績(${state.unlockedAchievements.length}/${ACHIEVEMENTS.length})</button>
+      <button class="tile-btn tile-green" onclick="openStats()">📊 統計</button>
+    </div>
+    <button class="sub-btn danger" onclick="openResults()">🏁 旅の記録・終了</button>
+    ${ui.shareMessage ? `<div class="share-toast">${esc(ui.shareMessage)}</div>` : ""}
+  `;
+}
+function renderDestinationPickerScreen(){
+  const modeLabel = ui.pinMode === "start" ? "出発地点を選ぶ" : (ui.pinMode === "waypoint" ? "寄り道スポットを選ぶ" : "目的地を選ぶ");
+  return `
+    ${renderHeader()}
+    <button class="sub-btn" onclick="closeDestinationPicker()">← ホームに戻る</button>
+    <div class="section-title">${esc(modeLabel)}</div>
+    <div class="pt-card" style="padding:12px;">
+      <input type="text" id="placeSearchInput" placeholder="地名で検索(例: 那須高原)" style="width:100%;padding:10px;border-radius:8px;border:2px solid var(--line);font-size:14px;margin-bottom:8px;">
+      <button class="sub-btn" onclick="searchPlaceName()" style="margin-bottom:0;">🔍 検索してピン候補を出す</button>
+    </div>
+    <p style="font-size:12px;color:var(--ink-dim);text-align:center;">地図を直接タップしてもピンを立てられます</p>
+    <div id="pinMap"></div>
+    ${ui.shareMessage ? `<div class="share-toast">${esc(ui.shareMessage)}</div>` : ""}
+  `;
+}
+function renderResultsScreen(){
+  if(ui.resultsSubScreen === "pointlog") return renderPointLogScreen();
+  return renderResultMapScreen();
+}
+function renderResultMapScreen(){
+  const sortedPins = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  const legs = pairPinsIntoLegs(sortedPins);
+  const waypoints = sortedPins.filter(p=>p.type==="waypoint");
+  const pinsHtml = legs.length ? legs.map(leg=>{
+    const name = leg.dest ? leg.dest.name : (leg.arrival ? leg.arrival.name : "");
+    const destTime = leg.dest ? fmtDateTime(leg.dest.timestamp) : "—";
+    const arrTime = leg.arrival ? fmtDateTime(leg.arrival.timestamp) : "(未到着)";
+    return `<div class="history-item"><div><div class="history-name">📍 ${esc(name)}</div><div class="history-sub">設定 ${destTime} → 到着 ${arrTime}</div></div></div>`;
+  }).join("") : `<div class="empty-note">記録はまだありません</div>`;
+  const waypointsHtml = waypoints.length ? waypoints.map(w=>
+    `<div class="history-item"><div><div class="history-name">🟣 ${esc(w.name)}</div><div class="history-sub">${fmtDateTime(w.timestamp)}</div></div></div>`
+  ).join("") : `<div class="empty-note">寄り道の記録はまだありません</div>`;
+  return `
+    ${renderHeader()}
+    <button class="sub-btn" onclick="ui.screen='home'; render();">← ホームに戻る</button>
+    ${renderPtCard()}
+    <div class="section-title">移動の軌跡</div>
+    <div id="resultMap"></div>
+    <div class="section-title">到着地ログ(${legs.length})</div>
+    ${pinsHtml}
+    <div class="section-title">寄り道スポット(${waypoints.length})</div>
+    ${waypointsHtml}
+    <button class="tile-btn tile-yellow full" onclick="goToPointLog()" style="margin-top:14px;">📈 ポイント推移へ</button>
+  `;
+}
+function buildResultsSummaryText(){
+  const sortedPins = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  const allLogs = [...state.pointLog].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  const doneMissions = allLogs.filter(l=>l.kind.startsWith("mission-") && l.amount>0);
+  const spendLogs = allLogs.filter(l=>l.kind==="spend");
+  const unlockedAch = ACHIEVEMENTS.filter(a=>state.unlockedAchievements.includes(a.id));
+  let text = "🎲 下道ロードトリップ道中記 旅の記録(詳細版)\n";
+  text += "================================\n";
+  text += `最終所持ポイント: ${state.pt.toLocaleString()}pt\n\n`;
+  text += "【到着地ログ】\n";
+  text += sortedPins.length ? sortedPins.map(p=>`${p.type==="destination"?"📍":"✅"} ${p.name}(${fmtDateTime(p.timestamp)})`).join("\n") : "(記録なし)";
+  text += "\n\n【達成ミッション】\n";
+  text += doneMissions.length ? doneMissions.map(l=>`🏆 ${l.note}(+${l.amount}pt)`).join("\n") : "(記録なし)";
+  text += "\n\n【支出記録】\n";
+  text += spendLogs.length ? spendLogs.map(l=>`💴 ${l.category||"その他"} - ${l.note}: ${(-l.amount).toLocaleString()}円(${fmtDateTime(l.timestamp)})`).join("\n") : "(記録なし)";
+  text += "\n\n【獲得した実績】\n";
+  text += unlockedAch.length ? unlockedAch.map(a=>`🏅 ${a.name}(+${a.reward}pt)`).join("\n") : "(記録なし)";
+  text += "\n\n【ポイント増減ログ(全件)】\n";
+  text += allLogs.length ? allLogs.map(l=>{
+    const label = l.kind.startsWith("mission-") ? l.note : (logKindLabel(l.kind) + (l.note?" - "+l.note:""));
+    return `${fmtDateTime(l.timestamp)} ${label} ${l.amount>=0?"+":""}${l.amount}pt`;
+  }).join("\n") : "(記録なし)";
+  return text;
+}
+async function shareResultsText(){
+  const text = buildResultsSummaryText();
+  state.hasExported = true;
+  await saveState();
+  checkAchievements();
+  if(navigator.share){
+    try{ await navigator.share({text, title:"旅の記録"}); return; }catch(e){}
+  }
+  try{
+    await navigator.clipboard.writeText(text);
+    ui.shareMessage = "コピーしました";
+  }catch(e){
+    ui.shareMessage = "コピーできませんでした";
+  }
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+}
+async function downloadResultsText(){
+  try{
+    const text = buildResultsSummaryText();
+    const blob = new Blob([text], {type:"text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "roadtrip-results-" + Date.now() + ".txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    ui.shareMessage = "ダウンロードを開始しました";
+    state.hasExported = true;
+    await saveState();
+    checkAchievements();
+  }catch(e){
+    ui.shareMessage = "ダウンロードできませんでした";
+  }
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+}
+
+/* ===================== ゲーム風リザルト画像エクスポート ===================== */
+async function downloadResultImage(){
+  try{
+    const sortedPins = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+    const doneMissions = state.pointLog.filter(l=>l.kind.startsWith("mission-") && l.amount>0);
+    const W=900, H=1400;
+    const canvas = document.createElement("canvas");
+    canvas.width=W; canvas.height=H;
+    const ctx = canvas.getContext("2d");
+    // 背景
+    ctx.fillStyle="#FFF8E7"; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle="#2B2320"; ctx.lineWidth=10; ctx.strokeRect(15,15,W-30,H-30);
+    // タイトル
+    ctx.textAlign="center";
+    ctx.fillStyle="#E63946";
+    ctx.font="900 54px sans-serif";
+    ctx.fillText("旅の記録", W/2, 110);
+    ctx.font="700 22px sans-serif";
+    ctx.fillStyle="#7A6F5E";
+    ctx.fillText("下道ロードトリップ道中記", W/2, 150);
+    // pt表示
+    ctx.fillStyle="#FFC93C";
+    ctx.fillRect(W/2-260,190,520,140);
+    ctx.strokeStyle="#2B2320"; ctx.lineWidth=6; ctx.strokeRect(W/2-260,190,520,140);
+    ctx.fillStyle="#2B2320";
+    ctx.font="900 64px sans-serif";
+    ctx.fillText(state.pt.toLocaleString()+" pt", W/2, 280);
+    // 経路(すごろく風パス、地点ごとに設定時刻→到着時刻を併記)
+    let y = 400;
+    ctx.textAlign="left";
+    ctx.fillStyle="#2B2320";
+    ctx.font="900 26px sans-serif";
+    ctx.fillText("🗺️ 旅の経路", 60, y);
+    y+=15;
+    const legs = pairPinsIntoLegs(sortedPins);
+    const waypoints = sortedPins.filter(p=>p.type==="waypoint");
+    const items = [];
+    legs.forEach(leg=>{
+      if(leg.dest && leg.arrival){
+        // 設定〜到着の間に挟まる寄り道を探し、レグを分割して正しい順序で挿入する
+        const destTime = new Date(leg.dest.timestamp);
+        const arrTime = new Date(leg.arrival.timestamp);
+        const between = waypoints.filter(w=>{
+          const wt = new Date(w.timestamp);
+          return wt >= destTime && wt <= arrTime;
+        });
+        items.push({ name: leg.dest.name, timeLabel: `設定 ${fmtDateTime(leg.dest.timestamp)}`, sortTime: leg.dest.timestamp });
+        between.forEach(w=>{
+          items.push({ name: "🟣"+w.name, timeLabel: `寄り道 ${fmtDateTime(w.timestamp)}`, sortTime: w.timestamp });
+        });
+        items.push({ name: leg.arrival.name+"(到着)", timeLabel: `到着 ${fmtDateTime(leg.arrival.timestamp)}`, sortTime: leg.arrival.timestamp });
+      } else if(leg.dest){
+        items.push({ name: leg.dest.name, timeLabel: `設定 ${fmtDateTime(leg.dest.timestamp)}(未到着)`, sortTime: leg.dest.timestamp });
+      } else if(leg.arrival){
+        items.push({ name: leg.arrival.name, timeLabel: `到着 ${fmtDateTime(leg.arrival.timestamp)}`, sortTime: leg.arrival.timestamp });
+      }
+    });
+    // どのレグの区間にも属さない寄り道(目的地未設定時や最後の到着後等)を末尾に追加
+    const usedWaypointTimes = new Set();
+    legs.forEach(leg=>{
+      if(leg.dest && leg.arrival){
+        waypoints.forEach(w=>{
+          const wt = new Date(w.timestamp);
+          if(wt >= new Date(leg.dest.timestamp) && wt <= new Date(leg.arrival.timestamp)) usedWaypointTimes.add(w.id);
+        });
+      }
+    });
+    waypoints.filter(w=>!usedWaypointTimes.has(w.id)).forEach(w=>{
+      items.push({ name: "🟣"+w.name, timeLabel: `寄り道 ${fmtDateTime(w.timestamp)}`, sortTime: w.timestamp });
+    });
+    const mergedItems = items.sort((a,b)=> new Date(a.sortTime||0) - new Date(b.sortTime||0));
+    const routeItems = [{name: state.settings.startLocation.name+"(スタート)", timeLabel:"出発"}].concat(mergedItems);
+    const colors=["#FFC93C","#4361EE","#2A9D8F","#E63946","#9B5DE5"];
+    routeItems.slice(0,10).forEach((p,i)=>{
+      y+=64;
+      ctx.fillStyle = colors[i%colors.length];
+      ctx.beginPath(); ctx.arc(80,y-16,14,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle="#2B2320"; ctx.lineWidth=3; ctx.stroke();
+      if(i>0){
+        ctx.beginPath(); ctx.moveTo(80,y-16-60); ctx.lineTo(80,y-16-14); ctx.strokeStyle="#2B2320"; ctx.lineWidth=3; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+      }
+      ctx.fillStyle="#2B2320";
+      ctx.font="700 24px sans-serif";
+      ctx.fillText((p.name||"").slice(0,20), 110, y-18);
+      ctx.font="500 17px sans-serif";
+      ctx.fillStyle="#7A6F5E";
+      ctx.fillText(p.timeLabel, 110, y+6);
+    });
+    y+=54;
+    // 統計サマリー
+    ctx.fillStyle="#2B2320";
+    ctx.font="900 26px sans-serif";
+    ctx.fillText("📊 サマリー", 60, y);
+    y+=44;
+    ctx.font="700 22px sans-serif";
+    const stats = [
+      `到着地: ${sortedPins.filter(p=>p.type==="arrival").length}箇所`,
+      `達成ミッション: ${doneMissions.length}件`,
+      `実績解除: ${state.unlockedAchievements.length} / ${ACHIEVEMENTS.length}`,
+      `サイコロ: ${state.diceRollCount||0}回`
+    ];
+    stats.forEach(s=>{ ctx.fillText(s, 60, y); y+=36; });
+
+    const blob = await new Promise(res=>canvas.toBlob(res, "image/png"));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "roadtrip-result-card-"+Date.now()+".png";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    ui.shareMessage = "画像をダウンロードしました";
+    state.hasExported = true;
+    await saveState();
+    checkAchievements();
+  }catch(e){
+    ui.shareMessage = "画像の生成に失敗しました";
+  }
+  render();
+  setTimeout(()=>{ ui.shareMessage=null; render(); }, 2500);
+}
+function renderPointLogScreen(){
+  const allLogs = [...state.pointLog].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  let running = defaultState().pt;
+  const logHtml = allLogs.length ? allLogs.map((l,i)=>{
+    running += l.amount;
+    const isMission = l.kind.startsWith("mission-");
+    const icon = isMission ? "🏆" : (l.kind==="blue" ? "🟦" : (l.kind==="red" ? "🟥" : (l.kind==="achievement" ? "🏅" : "🚩")));
+    const label = isMission ? esc(l.note) : esc(logKindLabel(l.kind) + (l.note ? " - "+l.note : ""));
+    return `<div class="history-item flow-item" style="animation-delay:${(i*0.12).toFixed(2)}s">
+      <div><div class="history-name">${icon} ${label}</div><div class="history-sub">${fmtDateTime(l.timestamp)}</div></div>
+      <div style="text-align:right;">
+        <div style="font-weight:900;color:${l.amount>=0?'var(--green-dark)':'var(--red-dark)'}">${l.amount>=0?"+":""}${l.amount}pt</div>
+        <div style="font-size:10px;color:var(--ink-dim);">→ ${running.toLocaleString()}pt</div>
+      </div>
+    </div>`;
+  }).join("") : `<div class="empty-note">ログはまだありません</div>`;
+  const sortedPins = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+  return `
+    ${renderHeader()}
+    <button class="sub-btn" onclick="backFromPointLog()">← 戻る</button>
+    ${renderPtCard()}
+    <div class="section-title">移動の軌跡(マップ)</div>
+    <div id="resultMap2"></div>
+    <div class="section-title">ポイント推移グラフ</div>
+    <div class="pt-card"><canvas id="pointChart" height="180"></canvas></div>
+    <div class="section-title">ポイントの軌跡(全${allLogs.length}件)</div>
+    ${logHtml}
+    <div class="section-title">エクスポート</div>
+    <button class="tile-btn tile-green full" onclick="shareResultsText()">📤 詳細記録をシェア/コピー(台本用テキスト)</button>
+    <button class="sub-btn" onclick="downloadResultsText()">📁 詳細記録をテキストでダウンロード</button>
+    <button class="tile-btn tile-yellow full" onclick="downloadResultImage()" style="margin-top:8px;">🖼️ ゲーム風リザルト画像をダウンロード</button>
+    ${ui.shareMessage ? `<div class="share-toast">${esc(ui.shareMessage)}</div>` : ""}
+  `;
+}
+
+/* ===================== オーバーレイ(演出) ===================== */
+function renderSlotMissionOverlay(){
+  const m = ui.drawResult.mission;
+  const legendary = isLegendaryMission(m.missionType, m.points);
+  return `
+    <div class="overlay-backdrop">
+      <div class="overlay-sheet">
+        <div class="slot-box ${(legendary && !ui.slotSpinning) ? 'legendary-flash' : ''}">
+          <div class="slot-display ${ui.slotSpinning?'spinning':''}">${ui.slotSpinning ? "🎰🎰🎰" : m.points+"pt"}</div>
+          ${!ui.slotSpinning ? `
+            <div class="slot-result-text">${esc(m.text)}</div>
+            <div class="slot-pt plus">+${m.points}pt</div>
+            ${legendary ? `<div class="confetti-note">✨🎉 大当たり 🎉✨</div>` : ""}
+            <button class="tile-btn tile-blue full" onclick="closeDrawOverlay()">OK</button>
+          ` : `<div class="empty-note">抽選中…</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+function cancelCardChoice(){
+  ui.overlay = null;
+  ui.cardChoices = null;
+  ui.cardChosenIndex = null;
+  ui.currentDrawType = null;
+  render();
+}
+function renderCardMissionOverlay(){
+  if(ui.cardChosenIndex === null){
+    const cardsHtml = ui.cardChoices.map((c,i)=>`<div class="mini-card-back" onclick="chooseCard(${i})">🎴</div>`).join("");
+    return `
+      <div class="overlay-backdrop">
+        <div class="overlay-sheet">
+          <div class="card-choice-title">好きなカードを1枚選んでください</div>
+          <div class="card-choice-grid">${cardsHtml}</div>
+          <button class="sub-btn" onclick="cancelCardChoice()" style="margin-top:14px;background:#fff;">キャンセル</button>
+        </div>
+      </div>`;
+  }
+  const chosen = ui.cardChoices[ui.cardChosenIndex];
+  const tm = MISSION_TYPE_META[ui.currentDrawType];
+  const legendary = isLegendaryMission(ui.currentDrawType, chosen.points);
+  return `
+    <div class="overlay-backdrop">
+      <div class="overlay-sheet">
+        <div class="card-flip-stage">
+          <div class="card-flip-inner ${ui.cardFlipped?'flipped':''}">
+            <div class="card-face card-front"><div class="card-front-mark">🎴</div></div>
+            <div class="card-face card-back ${(legendary&&ui.cardFlipped)?'legendary-flash':''}">
+              <span class="cat-badge" style="background:${tm.color}">No.${chosen.number}</span>
+              <div class="card-text">${esc(chosen.text)}</div>
+              <div class="card-pt">+${chosen.points}pt</div>
+              ${legendary?`<div class="confetti-note">✨大当たり✨</div>`:""}
+            </div>
+          </div>
+        </div>
+        ${ui.cardFlipped ? `<button class="tile-btn tile-green full" onclick="closeDrawOverlay()">OK</button>` : ""}
+      </div>
+    </div>`;
+}
+function renderOrbitEmojis(emoji, count){
+  const radius = 78;
+  let items = "";
+  for(let i=0;i<count;i++){
+    const angle = Math.round((360/count)*i);
+    items += `<span class="orbit-item" style="transform:rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg);">${emoji}</span>`;
+  }
+  return `<div class="orbit-container"><div class="orbit-ring">${items}</div></div>`;
+}
+function renderSlotSquareOverlay(){
+  const r = ui.drawResult;
+  const isBlue = r.kind === "blue";
+  const label = isBlue ? "青マス" : "赤マス";
+  const showOrbit = (!ui.slotSpinning && r.legendary);
+  return `
+    <div class="overlay-backdrop">
+      <div class="overlay-sheet">
+        ${showOrbit ? renderOrbitEmojis(isBlue?"😇":"😈", 6) : ""}
+        <div class="slot-box" style="position:relative;z-index:2;">
+          <div class="slot-display ${ui.slotSpinning?'spinning':''}" style="color:${isBlue?'#4361EE':'#E63946'};">${ui.slotSpinning?"🎰🎰🎰":(isBlue?"+":"-")+r.amount+"pt"}</div>
+          ${!ui.slotSpinning ? `
+            <div class="slot-result-text">${label}!</div>
+            <div class="slot-pt ${isBlue?'plus':'minus'}">${isBlue?"+":"-"}${r.amount}pt</div>
+            <button class="tile-btn ${isBlue?'tile-blue':'tile-red'} full" onclick="closeDrawOverlay()">OK</button>
+          ` : `<div class="empty-note">抽選中…</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+function renderDiceOverlay(){
+  const r = ui.drawResult;
+  const faces = ["","⚀","⚁","⚂","⚃","⚄","⚅"];
+  return `
+    <div class="overlay-backdrop">
+      <div class="overlay-sheet">
+        <div class="dice-box">
+          <div class="dice-face ${ui.slotSpinning?'rolling':''}">${faces[r.value]}</div>
+          ${!ui.slotSpinning ? `<div class="slot-result-text" style="font-size:22px;">${r.value}の目!</div><button class="tile-btn tile-purple full" onclick="closeDrawOverlay()">OK</button>` : `<div class="empty-note">振っています…</div>`}
+        </div>
+      </div>
+    </div>`;
+}
+function renderPinLabelModal(){
+  if(ui.overlay !== "pin-label" || !ui.pinDraft) return "";
+  const btnLabel = ui.pinMode === "start" ? "この場所を出発地点にする" : (ui.pinMode === "waypoint" ? "この場所を寄り道スポットにする" : "この場所を目的地にする");
+  return `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h3>ピンの地名を入力</h3>
+        <p>緯度${ui.pinDraft.lat.toFixed(4)} / 経度${ui.pinDraft.lng.toFixed(4)}</p>
+        <input type="text" id="pinNameInput" placeholder="例: 道の駅〇〇" value="${esc(ui.pinDraft.name||"")}">
+        <button class="tile-btn tile-blue full" onclick="submitPinLabel()">${esc(btnLabel)}</button>
+        <button class="sub-btn" onclick="cancelPinLabel()">キャンセル</button>
+      </div>
+    </div>`;
+}
+function renderConfirmModal(){
+  if(ui.overlay !== "confirm" || !ui.pendingConfirm) return "";
+  return `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h3>確認</h3>
+        <p>${esc(ui.pendingConfirm.message)}</p>
+        <button class="tile-btn tile-green full" onclick="confirmYes()">はい</button>
+        <button class="sub-btn" onclick="confirmNo()">キャンセル</button>
+      </div>
+    </div>`;
+}
+function renderRestoreBackupModal(){
+  if(ui.overlay !== "restore-backup") return "";
+  return `
+    <div class="modal-backdrop" onclick="if(event.target===this) closeRestoreBackup()">
+      <div class="modal">
+        <h3>バックアップから復元</h3>
+        <p>コピーしておいたバックアップのテキストを貼り付けてください。現在のデータは上書きされます。</p>
+        <textarea id="restoreBackupTextarea" rows="8" placeholder="ここに貼り付け"></textarea>
+        <button class="tile-btn tile-green full" onclick="submitRestoreBackup()">この内容で復元する</button>
+        <button class="sub-btn" onclick="closeRestoreBackup()">キャンセル</button>
+        ${ui.shareMessage?`<div class="share-toast">${esc(ui.shareMessage)}</div>`:""}
+      </div>
+    </div>`;
+}
+function renderStorageTestResult(){
+  if(!ui.storageTestResult) return "";
+  const r = ui.storageTestResult;
+  const line=(l,ok)=>`<div style="font-size:12px;margin-bottom:4px;">${l}: ${ok===null?"—":(ok?"✅ OK":"❌ 失敗")}</div>`;
+  let html = `<div style="margin-top:8px;">`;
+  html += `<div style="font-size:11px;font-weight:800;">モード: ${esc(r.mode)}</div>`;
+  if(r.mode==="native"){ html+=line("Claude保存(書込)",r.nativeSetOk); html+=line("Claude保存(読込)",r.nativeGetOk); }
+  html+=line("端末保存(書込)",r.localSetOk); html+=line("端末保存(読込)",r.localGetOk);
+  html+=`</div>`;
+  return html;
+}
+function renderSettingsModal(){
+  if(ui.overlay !== "settings") return "";
+  return `
+    <div class="modal-backdrop" onclick="if(event.target===this) closeSettings()">
+      <div class="modal">
+        <h3>設定</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:13px;">出発地点</label>
+          <span style="font-size:13px;font-weight:800;">${esc(state.settings.startLocation.name)}</span>
+        </div>
+        <button class="sub-btn" onclick="closeSettings(); openStartLocationPicker();">📍 出発地点を変更する</button>
+        <hr class="divider">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:13px;">到着ボーナス(pt)</label><input type="number" id="arrivalBonusInput" value="${state.settings.arrivalBonus}" style="width:100px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:13px;">ミッション保持上限</label><input type="number" id="heldCapInput" value="${state.settings.heldCap}" style="width:100px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:13px;">到着のたびに自動バックアップ</label>
+          <input type="checkbox" id="autoBackupToggle" ${state.settings.autoBackupOnArrival?"checked":""} style="width:22px;height:22px;">
+        </div>
+        <button class="tile-btn tile-green full" onclick="saveSettings()">保存する</button>
+        <hr class="divider">
+        <div class="section-title" style="margin-top:0;">ミッションのポイントレンジ調整</div>
+        <p style="margin-top:0;">数値を変えて反映すると、既存のミッションのポイントが比例して自動的に再スケールされます。</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:12px;width:90px;">移動中</span>
+          <input type="number" id="movingMinInput" value="${pointRangeFor('moving').min}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+          <span>〜</span>
+          <input type="number" id="movingMaxInput" value="${pointRangeFor('moving').max}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:12px;width:90px;">到着地</span>
+          <input type="number" id="arrivalMinInput" value="${pointRangeFor('arrival').min}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+          <span>〜</span>
+          <input type="number" id="arrivalMaxInput" value="${pointRangeFor('arrival').max}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+          <span style="font-size:12px;width:90px;">黄色マス</span>
+          <input type="number" id="yellowMinInput" value="${pointRangeFor('yellow').min}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+          <span>〜</span>
+          <input type="number" id="yellowMaxInput" value="${pointRangeFor('yellow').max}" style="width:70px;padding:8px;border-radius:8px;border:2px solid var(--line);">
+        </div>
+        <button class="tile-btn tile-yellow full" onclick="applyPointRanges()">この範囲に再スケールして反映</button>
+        <hr class="divider">
+        <button class="sub-btn" onclick="closeSettings(); openMissionEditor('moving')">🚗 移動中ミッションを編集</button>
+        <button class="sub-btn" onclick="closeSettings(); openMissionEditor('arrival')">🏝 到着地ミッションを編集</button>
+        <button class="sub-btn" onclick="closeSettings(); openMissionEditor('yellow')">🌟 黄色マスミッションを編集</button>
+        <hr class="divider">
+        <button class="sub-btn" onclick="exportStateBackup()">📋 バックアップをコピー</button>
+        <button class="sub-btn" onclick="downloadStateBackup()">📁 バックアップをダウンロード</button>
+        <button class="sub-btn" onclick="closeSettings(); openRestoreBackup();">📥 バックアップから復元</button>
+        <hr class="divider">
+        <button class="sub-btn" onclick="testStorage()">🔧 保存機能をテストする</button>
+        ${renderStorageTestResult()}
+        <hr class="divider">
+        <button class="sub-btn danger" onclick="closeSettings(); resetTrip();">旅をリセットする</button>
+        ${ui.shareMessage?`<div class="share-toast">${esc(ui.shareMessage)}</div>`:""}
+      </div>
+    </div>`;
+}
+function renderMissionEditorModal(){
+  if(ui.overlay !== "mission-editor") return "";
+  const meta = MISSION_TYPE_META[ui.missionEditorType];
+  const range = pointRangeFor(ui.missionEditorType);
+  return `
+    <div class="modal-backdrop" onclick="if(event.target===this) closeMissionEditor()">
+      <div class="modal">
+        <h3>${esc(meta.label)}を編集</h3>
+        <p>1行1ミッション、<b>番号,本文,ポイント,リピートフラグ</b>のCSV形式です(目安:${range.min}〜${range.max}pt)。リピートフラグは1で「何度でも出現」、0で「一度出たら出現済み扱い」になります。</p>
+        <textarea id="missionEditorTextarea" rows="14">${esc(ui.missionEditorDraft||"")}</textarea>
+        <button class="sub-btn" onclick="copyMissionData()">📋 コピー</button>
+        <button class="tile-btn tile-green full" onclick="saveMissionEditor()">保存する</button>
+        <button class="sub-btn" onclick="resetMissionsToDefault()">デフォルトに戻す</button>
+        <button class="sub-btn" onclick="closeMissionEditor()">キャンセル</button>
+        ${ui.shareMessage?`<div class="share-toast">${esc(ui.shareMessage)}</div>`:""}
+      </div>
+    </div>`;
+}
+
+function renderArrivalDateModal(){
+  if(ui.overlay !== "arrival-date") return "";
+  return `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h3>到着日時を記録</h3>
+        <p>${esc(state.activeDestination ? state.activeDestination.name : "")}に到着した日時を確認・調整できます。</p>
+        <input type="datetime-local" id="arrivalDateInput" value="${ui.arrivalDateDraft||""}">
+        <button class="tile-btn tile-green full" onclick="confirmArrivalWithDate()">✅ 到着を記録する(+${state.settings.arrivalBonus}pt)</button>
+        <button class="sub-btn" onclick="cancelArrivalDate()">キャンセル</button>
+      </div>
+    </div>`;
+}
+function render(){
+  const app = document.getElementById("app");
+  if(!state){ app.innerHTML = `<div class="empty-note">読み込み中…</div>`; return; }
+  let html = "";
+  if(ui.screen === "destination-picker") html = renderDestinationPickerScreen();
+  else if(ui.screen === "results") html = renderResultsScreen();
+  else if(ui.screen === "achievements") html = renderAchievementsScreen();
+  else if(ui.screen === "stats") html = renderStatsScreen();
+  else html = renderHome();
+
+  if(ui.overlay === "slot-mission") html += renderSlotMissionOverlay();
+  else if(ui.overlay === "card-mission") html += renderCardMissionOverlay();
+  else if(ui.overlay === "slot-square") html += renderSlotSquareOverlay();
+  else if(ui.overlay === "dice") html += renderDiceOverlay();
+  html += renderPinLabelModal();
+  html += renderExpenseModal();
+  html += renderArrivalDateModal();
+  html += renderSettingsModal();
+  html += renderRestoreBackupModal();
+  html += renderMissionEditorModal();
+  html += renderConfirmModal();
+  html += renderNewAchievementToast();
+
+  app.innerHTML = html;
+
+  if(ui.screen === "home" && state.phase === "moving") setTimeout(initMiniMap, 30);
+  if(ui.screen === "destination-picker") setTimeout(initPinMap, 30);
+  if(ui.screen === "results" && ui.resultsSubScreen === "pointlog") setTimeout(()=>{
+    const sorted = [...state.pins].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
+    initResultMap2(sorted);
+    initPointChart();
+  }, 30);
+}
+
+loadState();
+</script>
+</body>
+</html>
